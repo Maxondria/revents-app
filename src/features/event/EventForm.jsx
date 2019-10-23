@@ -1,7 +1,7 @@
 import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 
-const EventForm = () => {
+const EventForm = ({ toggleForm }) => {
   return (
     <Segment>
       <Form>
@@ -28,7 +28,9 @@ const EventForm = () => {
         <Button positive type='submit'>
           Submit
         </Button>
-        <Button negative type='button'>Cancel</Button>
+        <Button type='button' onClick={toggleForm}>
+          Cancel
+        </Button>
       </Form>
     </Segment>
   );
