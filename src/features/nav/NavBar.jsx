@@ -7,7 +7,7 @@ const NavBar = () => {
       <Container>
         <Menu.Item header>
           <img
-            src='assets/logo.png'
+            src='/assets/logo.png'
             style={{ marginRight: "1.5em" }}
             alt='logo'
           />
