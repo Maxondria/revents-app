@@ -8,31 +8,46 @@ import cuid from "cuid";
 const EventsDashboard = () => {
   const [events, setEvents] = useState(AppEvents);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const toggleForm = () => setIsOpen(prevState => !prevState);
+  const handleCreateFormOpen = () => {
+    setIsOpen(true);
+    setSelectedEvent(null);
+  };
+
+  const handleCancelForm = () => setIsOpen(false);
+
+  const handleSelectEvent = event => {
+    setSelectedEvent(event);
+    setIsOpen(true);
+  };
 
   const stageEvents = event => {
     event.id = cuid();
     event.hostPhotoURL = "/assets/user.png";
 
     setEvents(prevEvents => [...prevEvents, event]);
-    toggleForm();
+    handleCancelForm();
   };
 
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={events} />
+        <EventList events={events} selectEvent={handleSelectEvent} />
       </Grid.Column>
 
       <Grid.Column width={6}>
         <Button
           positive
-          content={isOpen ? "Cancel Create" : "Create Event"}
-          onClick={toggleForm}
+          content='Create Event'
+          onClick={handleCreateFormOpen}
         />
         {isOpen && (
-          <EventForm toggleForm={toggleForm} stageEvents={stageEvents} />
+          <EventForm
+            toggleForm={handleCancelForm}
+            stageEvents={stageEvents}
+            selectedEvent={selectedEvent}
+          />
         )}
       </Grid.Column>
     </Grid>

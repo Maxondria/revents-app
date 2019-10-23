@@ -2,14 +2,17 @@ import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { useForm } from "../../hooks/useForm";
 
-const EventForm = ({ toggleForm, stageEvents }) => {
-  const [event, handleChange] = useForm({
-    title: "",
-    date: "",
-    city: "",
-    venue: "",
-    hostedBy: ""
-  });
+const EventForm = ({ toggleForm, stageEvents, selectedEvent }) => {
+  const [event, handleChange] = useForm(
+    {
+      title: "",
+      date: "",
+      city: "",
+      venue: "",
+      hostedBy: ""
+    },
+    selectedEvent
+  );
 
   const handleSubmit = e => {
     e.preventDefault();
