@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./app/layouts/App";
 import * as serviceWorker from "./serviceWorker";
 
+import "semantic-ui-css/semantic.min.css";
+
 /**
  * HOT MODULE REPLACEMENT
  * -Prevent unnecessary re-renders on edit
