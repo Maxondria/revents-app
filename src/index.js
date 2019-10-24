@@ -5,6 +5,7 @@ import App from "./app/layouts/App";
 import * as serviceWorker from "./serviceWorker";
 
 import "semantic-ui-css/semantic.min.css";
+import { BrowserRouter as Router } from "react-router-dom";
 
 /**
  * HOT MODULE REPLACEMENT
@@ -12,7 +13,13 @@ import "semantic-ui-css/semantic.min.css";
  */
 const appRoot = document.getElementById("root");
 
-const renderer = () => ReactDOM.render(<App />, appRoot);
+const renderer = () =>
+  ReactDOM.render(
+    <Router>
+      <App />
+    </Router>,
+    appRoot
+  );
 
 if (module.hot) {
   module.hot.accept("./app/layouts/App", () => {
