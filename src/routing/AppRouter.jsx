@@ -9,6 +9,7 @@ import UserDetailedPage from "../features/user/settings/UserDetailedPage";
 import EventForm from "../features/event/EventForm";
 import NotFoundPage from "../features/user/settings/NotFoundPage";
 import NavBar from "../features/nav/NavBar";
+import { Container } from "semantic-ui-react";
 
 const AppRouter = () => {
   return (
@@ -19,13 +20,17 @@ const AppRouter = () => {
         render={() => (
           <>
             <NavBar />
-            <Route path='/events' component={EventsDashboard} />
-            <Route path='/events/:id' component={EventsDetailed} />
-            <Route path='/people' component={PeopleDashboard} />
-            <Route path='/profile/:id' component={UserDetailedPage} />
-            <Route path='/settings' component={SettingsDashboard} />
-            <Route path='/create-event' component={EventForm} />
-            <Route path='*' component={NotFoundPage} />
+            <Container className='main'>
+              <Switch>
+                <Route path='/events' component={EventsDashboard} />
+                <Route path='/events/:id' component={EventsDetailed} />
+                <Route path='/people' component={PeopleDashboard} />
+                <Route path='/profile/:id' component={UserDetailedPage} />
+                <Route path='/settings' component={SettingsDashboard} />
+                <Route path='/create-event' component={EventForm} />
+                <Route component={NotFoundPage} />
+              </Switch>
+            </Container>
           </>
         )}
       />
