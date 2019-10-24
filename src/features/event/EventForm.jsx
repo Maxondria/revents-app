@@ -2,7 +2,7 @@ import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { useForm } from "../../hooks/useForm";
 
-const EventForm = ({ toggleForm, stageEvents, selectedEvent }) => {
+const EventForm = ({ toggleForm, stageEvents, selectedEvent, updateEvent }) => {
   const [event, handleChange] = useForm(
     {
       title: "",
@@ -16,7 +16,10 @@ const EventForm = ({ toggleForm, stageEvents, selectedEvent }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    stageEvents(event);
+
+    if (event.id !== undefined) {
+      updateEvent(event);
+    } else stageEvents(event);
   };
 
   return (

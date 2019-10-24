@@ -30,6 +30,15 @@ const EventsDashboard = () => {
     handleCancelForm();
   };
 
+  const handleUpdateEvent = modifiedEvent => {
+    const updateEvent = event =>
+      event.id === modifiedEvent.id ? { ...modifiedEvent } : event;
+
+    setEvents(prevEvents => prevEvents.map(updateEvent));
+    setIsOpen(false);
+    setSelectedEvent(null);
+  };
+
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -47,6 +56,7 @@ const EventsDashboard = () => {
             toggleForm={handleCancelForm}
             stageEvents={stageEvents}
             selectedEvent={selectedEvent}
+            updateEvent={handleUpdateEvent}
           />
         )}
       </Grid.Column>
