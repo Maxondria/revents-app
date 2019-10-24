@@ -39,10 +39,18 @@ const EventsDashboard = () => {
     setSelectedEvent(null);
   };
 
+  const handleDeleteEvent = id => {
+    setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
+  };
+
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={events} selectEvent={handleSelectEvent} />
+        <EventList
+          deleteEvent={handleDeleteEvent}
+          events={events}
+          selectEvent={handleSelectEvent}
+        />
       </Grid.Column>
 
       <Grid.Column width={6}>
