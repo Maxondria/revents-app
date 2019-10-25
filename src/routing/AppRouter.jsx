@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import HomePage from "../features/home/HomePage";
 import EventsDashboard from "../features/event/EventsDashboard";
-import EventsDetailed from "../features/event/EventsDetailed";
+import EventsDetailed from "../features/event/details/EventsDetailed";
 import PeopleDashboard from "../features/user/people/PeopleDashboard";
 import SettingsDashboard from "../features/user/settings/SettingsDashboard";
 import UserDetailedPage from "../features/user/settings/UserDetailedPage";
