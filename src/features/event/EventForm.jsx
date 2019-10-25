@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
 import TextInput from "../../app/common/form/TextInput";
+import TextArea from "../../app/common/form/TextArea";
 
 const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
   const handleSubmit = e => {
@@ -46,7 +47,8 @@ const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
             <Field
               name='description'
               label='Event Description'
-              component={TextInput}
+              rows={3}
+              component={TextArea}
               placeholder='How would you describe your event?'
             />
 
