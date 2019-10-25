@@ -1,3 +1,1 @@
-const actionTypes = {};
-
-export { actionTypes as default };
+export const TEST_CONSTANT = "TEST_CONSTANT";
