@@ -2,8 +2,7 @@ import { useEffect, useReducer } from "react";
 
 const actionTypes = {
   INPUT_VALUE: "INPUT_VALUE",
-  UPDATE_VALUES: "UPDATE_VALUES",
-  SET_INITIAL_STATE: "SET_INITIAL_STATE"
+  UPDATE_VALUES: "UPDATE_VALUES"
 };
 
 const valuesReducer = (state, action) => {
@@ -18,8 +17,6 @@ const valuesReducer = (state, action) => {
         ...state,
         ...action.payload
       };
-    case actionTypes.RESET_STATE:
-      return action.payload;
     default:
       return state;
   }
@@ -34,13 +31,7 @@ export const useForm = (initialState, editingValues = null) => {
         type: actionTypes.UPDATE_VALUES,
         payload: { ...editingValues }
       });
-    } else {
-      dispatch({
-        type: actionTypes.RESET_STATE,
-        payload: initialState
-      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingValues]);
 
   return [

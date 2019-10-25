@@ -1,8 +1,9 @@
 import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { useForm } from "../../hooks/useForm";
+import { connect } from "react-redux";
 
-const EventForm = ({ toggleForm, stageEvents, selectedEvent, updateEvent }) => {
+const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
   const [event, handleChange] = useForm(
     {
       title: "",
@@ -74,7 +75,7 @@ const EventForm = ({ toggleForm, stageEvents, selectedEvent, updateEvent }) => {
         <Button positive type='submit'>
           Submit
         </Button>
-        <Button type='button' onClick={toggleForm}>
+        <Button type='button' onClick={() => history.push("/events")}>
           Cancel
         </Button>
       </Form>
@@ -82,4 +83,10 @@ const EventForm = ({ toggleForm, stageEvents, selectedEvent, updateEvent }) => {
   );
 };
 
-export default EventForm;
+const mapStateToProps = ({ events }, props) => ({
+  selectedEvent: props.match.params.id
+    ? events && events.find(event => event.id === props.match.params.id)
+    : null
+});
+
+export default connect(mapStateToProps)(EventForm);

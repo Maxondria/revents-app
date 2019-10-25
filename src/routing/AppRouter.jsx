@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import HomePage from "../features/home/HomePage";
 import EventsDashboard from "../features/event/EventsDashboard";
 import EventsDetailed from "../features/event/details/EventsDetailed";
@@ -11,7 +11,7 @@ import NotFoundPage from "../features/user/settings/NotFoundPage";
 import NavBar from "../features/nav/NavBar";
 import { Container } from "semantic-ui-react";
 
-const AppRouter = () => {
+const AppRouter = props => {
   return (
     <Switch>
       <Route path='/' component={HomePage} exact />
@@ -21,7 +21,7 @@ const AppRouter = () => {
           <>
             <NavBar />
             <Container className='main'>
-              <Switch>
+              <Switch key={props.location.key}>
                 <Route path='/events' exact component={EventsDashboard} />
                 <Route path='/events/:id' component={EventsDetailed} />
                 <Route path='/people' component={PeopleDashboard} />
@@ -41,4 +41,4 @@ const AppRouter = () => {
   );
 };
 
-export default AppRouter;
+export default withRouter(AppRouter);
