@@ -27,7 +27,10 @@ const AppRouter = () => {
                 <Route path='/people' component={PeopleDashboard} />
                 <Route path='/profile/:id' component={UserDetailedPage} />
                 <Route path='/settings' component={SettingsDashboard} />
-                <Route path='/create-event' component={EventForm} />
+                <Route
+                  path={["/create-event", "/manage-event/:id"]}
+                  component={EventForm}
+                />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>
