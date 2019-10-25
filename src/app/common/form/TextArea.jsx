@@ -13,7 +13,12 @@ const TextArea = ({
     <>
       <Form.Field error={touched && !!error}>
         <label>{label}</label>
-        <textarea {...input} placeholder={placeholder} type={type} rows={rows}></textarea>
+        <textarea
+          {...input}
+          placeholder={placeholder}
+          type={type}
+          rows={rows}
+        />
         {touched && error && (
           <Label basic color='red'>
             {error}

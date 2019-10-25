@@ -7,8 +7,18 @@ import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
 import TextInput from "../../app/common/form/TextInput";
 import TextArea from "../../app/common/form/TextArea";
+import SelectInput from "../../app/common/form/SelectInput";
 
 const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
+  const category = [
+    { key: "drinks", text: "Drinks", value: "drinks" },
+    { key: "culture", text: "Culture", value: "culture" },
+    { key: "film", text: "Film", value: "film" },
+    { key: "food", text: "Food", value: "food" },
+    { key: "music", text: "Music", value: "music" },
+    { key: "travel", text: "Travel", value: "travel" }
+  ];
+
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -41,7 +51,8 @@ const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
             <Field
               name='category'
               label='Event Category'
-              component={TextInput}
+              component={SelectInput}
+              options={category}
               placeholder='What is your event about?'
             />
             <Field
