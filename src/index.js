@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 
 import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import ScrollToTop from "./app/common/utils/ScrollToTop";
 
 import { Provider as ReduxProvider } from "react-redux";
 import { configureStore } from "./app/redux/store";
@@ -22,6 +23,7 @@ const renderer = () =>
   ReactDOM.render(
     <ReduxProvider store={store}>
       <Router>
+        <ScrollToTop />
         <App />
       </Router>
     </ReduxProvider>,
