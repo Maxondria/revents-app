@@ -9,13 +9,25 @@ import TextInput from "../../app/common/form/TextInput";
 import TextArea from "../../app/common/form/TextArea";
 import SelectInput from "../../app/common/form/SelectInput";
 
-const EventForm = ({
-  history,
-  handleSubmit,
-  initialValues,
-  createEvent,
-  updateEvent
-}) => {
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  hasLengthGreaterThan
+} from "revalidate";
+
+const EventForm = props => {
+  const {
+    history,
+    handleSubmit,
+    initialValues,
+    createEvent,
+    updateEvent,
+    invalid,
+    submitting,
+    pristine
+  } = props;
+
   const category = [
     { key: "drinks", text: "Drinks", value: "drinks" },
     { key: "culture", text: "Culture", value: "culture" },
@@ -88,7 +100,11 @@ const EventForm = ({
               component={TextInput}
               placeholder='When will it happen?'
             />
-            <Button positive type='submit'>
+            <Button
+              disabled={invalid || submitting || pristine}
+              positive
+              type='submit'
+            >
               Submit
             </Button>
             <Button type='button' onClick={() => history.push("/events")}>
@@ -107,11 +123,25 @@ const mapStateToProps = ({ events }, props) => ({
     : null
 });
 
+const validate = combineValidators({
+  title: isRequired({ message: "Event title is required" }),
+  category: isRequired({ message: "Category is required" }),
+  description: composeValidators(
+    isRequired({ message: "Please enter a description" }),
+    hasLengthGreaterThan(4)({
+      message: "Description must be atleast 5 letters long"
+    })
+  )(),
+  city: isRequired("City"),
+  venue: isRequired("Venue")
+});
+
 export default connect(
   mapStateToProps,
   { createEvent, updateEvent }
 )(
   reduxForm({
-    form: "rxEventForm"
+    form: "rxEventForm",
+    validate
   })(EventForm)
 );
