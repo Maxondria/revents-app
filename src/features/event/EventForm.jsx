@@ -2,8 +2,11 @@ import React from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 import { useForm } from "../../hooks/useForm";
 import { connect } from "react-redux";
+import cuid from "cuid";
 
-const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
+import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
+
+const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
   const [event, handleChange] = useForm(
     {
       title: "",
@@ -12,7 +15,7 @@ const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
       venue: "",
       hostedBy: ""
     },
-    selectedEvent
+    eventValues
   );
 
   const handleSubmit = e => {
@@ -20,7 +23,16 @@ const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
 
     if (event.id !== undefined) {
       updateEvent(event);
-    } else stageEvents(event);
+      history.push(`/events/${event.id}`);
+    } else {
+      createEvent({
+        ...event,
+        id: cuid(),
+        hostPhotoURL: "/assets/user.png"
+      });
+
+      history.push("events");
+    }
   };
 
   return (
@@ -32,7 +44,7 @@ const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
             name='title'
             value={event.title}
             onChange={handleChange}
-            placeholder='First Name'
+            placeholder='Event Title'
           />
         </Form.Field>
         <Form.Field>
@@ -84,9 +96,12 @@ const EventForm = ({ history, stageEvents, selectedEvent, updateEvent }) => {
 };
 
 const mapStateToProps = ({ events }, props) => ({
-  selectedEvent: props.match.params.id
+  eventValues: props.match.params.id
     ? events && events.find(event => event.id === props.match.params.id)
     : null
 });
 
-export default connect(mapStateToProps)(EventForm);
+export default connect(
+  mapStateToProps,
+  { createEvent, updateEvent }
+)(EventForm);
