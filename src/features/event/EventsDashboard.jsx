@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import { Grid, Button } from "semantic-ui-react";
 import EventList from "./EventList";
 import EventForm from "./EventForm";
-import { events as AppEvents } from "../../playground/test-data/events";
 import cuid from "cuid";
 
-const EventsDashboard = () => {
-  const [events, setEvents] = useState(AppEvents);
+import { connect } from "react-redux";
+import {
+  createEvent,
+  deleteEvent,
+  updateEvent
+} from "../../app/redux/actions/eventActions";
+
+const EventsDashboard = ({ events, createEvent, deleteEvent, updateEvent }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -26,21 +31,18 @@ const EventsDashboard = () => {
     event.id = cuid();
     event.hostPhotoURL = "/assets/user.png";
 
-    setEvents(prevEvents => [...prevEvents, event]);
+    createEvent(event);
     handleCancelForm();
   };
 
   const handleUpdateEvent = modifiedEvent => {
-    const updateEvent = event =>
-      event.id === modifiedEvent.id ? { ...modifiedEvent } : event;
-
-    setEvents(prevEvents => prevEvents.map(updateEvent));
+    updateEvent(modifiedEvent);
     setIsOpen(false);
     setSelectedEvent(null);
   };
 
   const handleDeleteEvent = id => {
-    setEvents(prevEvents => prevEvents.filter(event => event.id !== id));
+    deleteEvent(id);
   };
 
   return (
@@ -72,4 +74,11 @@ const EventsDashboard = () => {
   );
 };
 
-export default EventsDashboard;
+const mapStateToProps = ({ events }) => ({
+  events
+});
+
+export default connect(
+  mapStateToProps,
+  { createEvent, deleteEvent, updateEvent }
+)(EventsDashboard);
