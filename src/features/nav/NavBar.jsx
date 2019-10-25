@@ -25,7 +25,7 @@ const NavBar = props => {
           Re-vents
         </Menu.Item>
 
-        <Menu.Item as={NavLink} to='/events' name='Events' />
+        <Menu.Item as={NavLink} exact to='/events' name='Events' />
 
         <Menu.Item as={NavLink} to='/people' name='People' />
 

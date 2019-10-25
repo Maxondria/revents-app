@@ -22,7 +22,7 @@ const AppRouter = () => {
             <NavBar />
             <Container className='main'>
               <Switch>
-                <Route path='/events' component={EventsDashboard} />
+                <Route path='/events' exact component={EventsDashboard} />
                 <Route path='/events/:id' component={EventsDetailed} />
                 <Route path='/people' component={PeopleDashboard} />
                 <Route path='/profile/:id' component={UserDetailedPage} />
