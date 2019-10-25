@@ -9,7 +9,7 @@ import TextInput from "../../app/common/form/TextInput";
 import TextArea from "../../app/common/form/TextArea";
 import SelectInput from "../../app/common/form/SelectInput";
 
-const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
+const EventForm = ({ history, createEvent, updateEvent }) => {
   const category = [
     { key: "drinks", text: "Drinks", value: "drinks" },
     { key: "culture", text: "Culture", value: "culture" },
@@ -97,7 +97,7 @@ const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
 };
 
 const mapStateToProps = ({ events }, props) => ({
-  eventValues: props.match.params.id
+  initialValues: props.match.params.id
     ? events && events.find(event => event.id === props.match.params.id)
     : null
 });
