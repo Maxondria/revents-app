@@ -1,97 +1,85 @@
 import React from "react";
-import { Segment, Form, Button } from "semantic-ui-react";
-import { useForm } from "../../hooks/useForm";
+import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
-import cuid from "cuid";
+// import cuid from "cuid";
 
+import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
+import TextInput from "../../app/common/form/TextInput";
 
 const EventForm = ({ history, eventValues, createEvent, updateEvent }) => {
-  const [event, handleChange] = useForm(
-    {
-      title: "",
-      date: "",
-      city: "",
-      venue: "",
-      hostedBy: ""
-    },
-    eventValues
-  );
-
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (event.id !== undefined) {
-      updateEvent(event);
-      history.push(`/events/${event.id}`);
-    } else {
-      createEvent({
-        ...event,
-        id: cuid(),
-        hostPhotoURL: "/assets/user.png"
-      });
+    // if (event.id !== undefined) {
+    //   updateEvent(event);
+    //   history.push(`/events/${event.id}`);
+    // } else {
+    //   createEvent({
+    //     ...event,
+    //     id: cuid(),
+    //     hostPhotoURL: "/assets/user.png"
+    //   });
 
-      history.push("events");
-    }
+    //   history.push("events");
+    // }
   };
 
   return (
-    <Segment>
-      <Form onSubmit={handleSubmit}>
-        <Form.Field>
-          <label>Event Title</label>
-          <input
-            name='title'
-            value={event.title}
-            onChange={handleChange}
-            placeholder='Event Title'
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Event Date</label>
-          <input
-            type='date'
-            name='date'
-            value={event.date}
-            onChange={handleChange}
-            placeholder='Event Date'
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>City</label>
-          <input
-            name='city'
-            value={event.city}
-            onChange={handleChange}
-            placeholder='City event is taking place'
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Venue</label>
-          <input
-            name='venue'
-            value={event.venue}
-            onChange={handleChange}
-            placeholder='Enter the Venue of the event'
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Hosted By</label>
-          <input
-            name='hostedBy'
-            value={event.hostedBy}
-            onChange={handleChange}
-            placeholder='Enter the name of person hosting'
-          />
-        </Form.Field>
-        <Button positive type='submit'>
-          Submit
-        </Button>
-        <Button type='button' onClick={() => history.push("/events")}>
-          Cancel
-        </Button>
-      </Form>
-    </Segment>
+    <Grid>
+      <Grid.Column width={10}>
+        <Segment>
+          <Header sub color='teal' content='Content Details' />
+          <Form onSubmit={handleSubmit}>
+            <Field
+              name='title'
+              label='Event Title'
+              component={TextInput}
+              placeholder='Give your event a title'
+            />
+            <Field
+              name='category'
+              label='Event Category'
+              component={TextInput}
+              placeholder='What is your event about?'
+            />
+            <Field
+              name='description'
+              label='Event Description'
+              component={TextInput}
+              placeholder='How would you describe your event?'
+            />
+
+            <Header sub color='teal' content='Event Location Details' />
+
+            <Field
+              name='city'
+              label='City'
+              component={TextInput}
+              placeholder='Event City?'
+            />
+            <Field
+              name='venue'
+              label='Venue'
+              component={TextInput}
+              placeholder='Real Venue'
+            />
+            <Field
+              name='date'
+              label='Event Date'
+              component={TextInput}
+              placeholder='When will it happen?'
+            />
+            <Button positive type='submit'>
+              Submit
+            </Button>
+            <Button type='button' onClick={() => history.push("/events")}>
+              Cancel
+            </Button>
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
   );
 };
 
@@ -104,4 +92,8 @@ const mapStateToProps = ({ events }, props) => ({
 export default connect(
   mapStateToProps,
   { createEvent, updateEvent }
-)(EventForm);
+)(
+  reduxForm({
+    form: "rxEventForm"
+  })(EventForm)
+);
