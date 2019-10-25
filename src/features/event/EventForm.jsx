@@ -1,7 +1,7 @@
 import React from "react";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
-// import cuid from "cuid";
+import cuid from "cuid";
 
 import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
@@ -9,7 +9,13 @@ import TextInput from "../../app/common/form/TextInput";
 import TextArea from "../../app/common/form/TextArea";
 import SelectInput from "../../app/common/form/SelectInput";
 
-const EventForm = ({ history, createEvent, updateEvent }) => {
+const EventForm = ({
+  history,
+  handleSubmit,
+  initialValues,
+  createEvent,
+  updateEvent
+}) => {
   const category = [
     { key: "drinks", text: "Drinks", value: "drinks" },
     { key: "culture", text: "Culture", value: "culture" },
@@ -19,21 +25,20 @@ const EventForm = ({ history, createEvent, updateEvent }) => {
     { key: "travel", text: "Travel", value: "travel" }
   ];
 
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    // if (event.id !== undefined) {
-    //   updateEvent(event);
-    //   history.push(`/events/${event.id}`);
-    // } else {
-    //   createEvent({
-    //     ...event,
-    //     id: cuid(),
-    //     hostPhotoURL: "/assets/user.png"
-    //   });
-
-    //   history.push("events");
-    // }
+  const formSubmitHandler = values => {
+    if (initialValues && initialValues.id) {
+      updateEvent(values);
+      history.push(`/events/${initialValues.id}`);
+    } else {
+      const id = cuid();
+      createEvent({
+        ...values,
+        id,
+        hostPhotoURL: "/assets/user.png",
+        hostedBy: "Max BigBudget"
+      });
+      history.push(`/events/${id}`);
+    }
   };
 
   return (
@@ -41,7 +46,7 @@ const EventForm = ({ history, createEvent, updateEvent }) => {
       <Grid.Column width={10}>
         <Segment>
           <Header sub color='teal' content='Content Details' />
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit(formSubmitHandler)}>
             <Field
               name='title'
               label='Event Title'
