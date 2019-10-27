@@ -12,7 +12,7 @@ const TextArea = ({
   return (
     <>
       <Form.Field error={touched && !!error}>
-        <label>{label}</label>
+        <Label>{label}</Label>
         <textarea
           {...input}
           placeholder={placeholder}

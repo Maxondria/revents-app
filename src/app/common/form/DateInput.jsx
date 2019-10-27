@@ -14,12 +14,14 @@ const DateInput = ({
 }) => {
   return (
     <Form.Field error={touched && !!error}>
-      <Label>{label}</Label>
+      {/* <Label>{label}</Label> */}
       <DatePicker
         {...rest}
         placeholderText={placeholder}
         selected={input.value ? new Date(input.value) : null}
         onChange={input.onChange}
+        onBlur={input.onBlur}
+        onChangeRaw={event => event.preventDefault()}
       />
       {touched && error && (
         <Label basic color='red'>

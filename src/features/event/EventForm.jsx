@@ -8,6 +8,7 @@ import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
 import TextInput from "../../app/common/form/TextInput";
 import TextArea from "../../app/common/form/TextArea";
 import SelectInput from "../../app/common/form/SelectInput";
+import DateInput from "../../app/common/form/DateInput";
 
 import {
   combineValidators,
@@ -96,8 +97,10 @@ const EventForm = props => {
             />
             <Field
               name='date'
-              label='Event Date'
-              component={TextInput}
+              dateFormat='dd LLL yyyy h:mm a'
+              showTimeSelect
+              timeFormat='HH:mm'
+              component={DateInput}
               placeholder='When will it happen?'
             />
             <Button
@@ -133,7 +136,8 @@ const validate = combineValidators({
     })
   )(),
   city: isRequired("City"),
-  venue: isRequired("Venue")
+  venue: isRequired("Venue"),
+  date: isRequired("Date")
 });
 
 export default connect(
