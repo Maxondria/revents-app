@@ -10,7 +10,7 @@ import EventForm from "../features/event/EventForm";
 import NotFoundPage from "../features/user/settings/NotFoundPage";
 import NavBar from "../features/nav/NavBar";
 import { Container } from "semantic-ui-react";
-import LocationSearchInput from "../playground/LocationSearchInput";
+import GoogleMapsExample from "../playground/GoogleMapsExample";
 
 const AppRouter = props => {
   return (
@@ -28,7 +28,7 @@ const AppRouter = props => {
                 <Route path='/people' component={PeopleDashboard} />
                 <Route path='/profile/:id' component={UserDetailedPage} />
                 <Route path='/settings' component={SettingsDashboard} />
-                <Route path='/test-places' component={LocationSearchInput} />
+                <Route path='/test-places' component={GoogleMapsExample} />
                 <Route
                   path={["/create-event", "/manage-event/:id"]}
                   component={EventForm}

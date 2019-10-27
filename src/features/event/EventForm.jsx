@@ -34,13 +34,13 @@ const EventForm = props => {
     pristine
   } = props;
 
-  const [cityLatLong, setCityLatLong] = useState({});
-  const [venueLatLong, setVenueLatLong] = useState({});
+  const [cityLatLng, setCityLatLng] = useState({});
+  const [venueLatLng, setVenueLatLng] = useState({});
 
   const handleCitySelect = city => {
     geocodeByAddress(city)
       .then(results => getLatLng(results[0]))
-      .then(latLng => setCityLatLong(latLng))
+      .then(latLng => setCityLatLng(latLng))
       .then(() => change("city", city))
       .catch(error => console.error("Error", error));
   };
@@ -48,7 +48,7 @@ const EventForm = props => {
   const handleVenueSelect = venue => {
     geocodeByAddress(venue)
       .then(results => getLatLng(results[0]))
-      .then(latLng => setVenueLatLong(latLng))
+      .then(latLng => setVenueLatLng(latLng))
       .then(() => change("venue", venue))
       .catch(error => console.error("Error", error));
   };
@@ -63,7 +63,7 @@ const EventForm = props => {
   ];
 
   const formSubmitHandler = values => {
-    values.venueLatLong = venueLatLong;
+    values.venueLatLng = venueLatLng;
     if (initialValues && initialValues.id) {
       updateEvent(values);
       history.push(`/events/${initialValues.id}`);
@@ -121,7 +121,7 @@ const EventForm = props => {
               label='Venue'
               onSelect={handleVenueSelect}
               options={{
-                location: new google.maps.LatLng(cityLatLong),
+                location: new google.maps.LatLng(cityLatLng),
                 radius: 1000,
                 types: ["establishment"]
               }}
