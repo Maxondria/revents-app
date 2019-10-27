@@ -7,12 +7,14 @@ const PlacesInput = ({
   width,
   label,
   options,
+  onSelect,
   placeholder,
   meta: { touched, error }
 }) => {
   return (
     <PlacesAutocomplete
       value={value}
+      onSelect={onSelect}
       onChange={onChange}
       searchOptions={options}
     >

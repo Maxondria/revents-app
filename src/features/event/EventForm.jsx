@@ -1,4 +1,5 @@
-import React from "react";
+/*global google*/
+import React, { useState } from "react";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
 import cuid from "cuid";
@@ -18,6 +19,8 @@ import {
   hasLengthGreaterThan
 } from "revalidate";
 
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+
 const EventForm = props => {
   const {
     history,
@@ -26,9 +29,29 @@ const EventForm = props => {
     createEvent,
     updateEvent,
     invalid,
+    change,
     submitting,
     pristine
   } = props;
+
+  const [cityLatLong, setCityLatLong] = useState({});
+  const [venueLatLong, setVenueLatLong] = useState({});
+
+  const handleCitySelect = city => {
+    geocodeByAddress(city)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => setCityLatLong(latLng))
+      .then(() => change("city", city))
+      .catch(error => console.error("Error", error));
+  };
+
+  const handleVenueSelect = venue => {
+    geocodeByAddress(venue)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => setVenueLatLong(latLng))
+      .then(() => change("venue", venue))
+      .catch(error => console.error("Error", error));
+  };
 
   const category = [
     { key: "drinks", text: "Drinks", value: "drinks" },
@@ -40,6 +63,7 @@ const EventForm = props => {
   ];
 
   const formSubmitHandler = values => {
+    values.venueLatLong = venueLatLong;
     if (initialValues && initialValues.id) {
       updateEvent(values);
       history.push(`/events/${initialValues.id}`);
@@ -88,11 +112,19 @@ const EventForm = props => {
               name='city'
               label='City'
               component={PlacesInput}
+              onSelect={handleCitySelect}
+              options={{ types: ["(cities)"] }}
               placeholder='Event City?'
             />
             <Field
               name='venue'
               label='Venue'
+              onSelect={handleVenueSelect}
+              options={{
+                location: new google.maps.LatLng(cityLatLong),
+                radius: 1000,
+                types: ["establishment"]
+              }}
               component={PlacesInput}
               placeholder='Specific Venue?'
             />
