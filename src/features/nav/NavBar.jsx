@@ -29,6 +29,8 @@ const NavBar = props => {
 
         <Menu.Item as={NavLink} to='/people' name='People' />
 
+        <Menu.Item as={NavLink} to='/test-places' name='Test' />
+
         <Menu.Item>
           <Button
             as={Link}
