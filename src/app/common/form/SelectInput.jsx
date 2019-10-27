@@ -12,7 +12,7 @@ const SelectInput = ({
 }) => {
   return (
     <Form.Field error={touched && !!error}>
-      <label>{label}</label>
+      <Label>{label}</Label>
       <Select
         value={input.value || null}
         onChange={(e, data) => input.onChange(data.value)}
