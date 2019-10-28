@@ -3,12 +3,14 @@ import { createReducer } from "../../common/utils/reducer-utils";
 import {
   CREATE_EVENT,
   UPDATE_EVENT,
-  DELETE_EVENT
+  DELETE_EVENT,
+  FETCH_EVENTS
 } from "../constants/actionTypes";
 
 export const eventsReducer = createReducer(initialState.events, {
   [CREATE_EVENT]: (state, { event }) => [...state, event],
   [UPDATE_EVENT]: (state, { event }) =>
     state.map(evt => (evt.id === event.id ? { ...event } : evt)),
-  [DELETE_EVENT]: (state, { id }) => state.filter(event => event.id !== id)
+  [DELETE_EVENT]: (state, { id }) => state.filter(event => event.id !== id),
+  [FETCH_EVENTS]: (_state, { events }) => events
 });
