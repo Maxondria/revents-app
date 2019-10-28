@@ -4,13 +4,16 @@ import EventList from "./EventList";
 
 import { connect } from "react-redux";
 import { deleteEvent } from "../../app/redux/actions/eventActions";
+import LoadingSpinner from "../../app/layouts/LoadingSpinner";
 
-const EventsDashboard = ({ events, deleteEvent }) => {
+const EventsDashboard = ({ events, deleteEvent, loading }) => {
   const handleDeleteEvent = id => {
     deleteEvent(id);
   };
 
-  return (
+  return loading ? (
+    <LoadingSpinner/>
+  ) : (
     <Grid>
       <Grid.Column width={10}>
         <EventList deleteEvent={handleDeleteEvent} events={events} />
@@ -23,8 +26,9 @@ const EventsDashboard = ({ events, deleteEvent }) => {
   );
 };
 
-const mapStateToProps = ({ events }) => ({
-  events
+const mapStateToProps = ({ events, async: { loading } }) => ({
+  events,
+  loading
 });
 
 export default connect(

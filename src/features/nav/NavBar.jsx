@@ -37,20 +37,24 @@ const NavBar = ({
 
         <Menu.Item as={NavLink} exact to='/events' name='Events' />
 
-        <Menu.Item as={NavLink} to='/people' name='People' />
+        {authenticated && (
+          <>
+            <Menu.Item as={NavLink} to='/people' name='People' />
 
-        <Menu.Item as={NavLink} to='/test-places' name='Test' />
+            <Menu.Item as={NavLink} to='/test-places' name='Test' />
 
-        <Menu.Item>
-          <Button
-            as={Link}
-            to='/create-event'
-            floated='right'
-            positive
-            inverted
-            content='Create Event'
-          />
-        </Menu.Item>
+            <Menu.Item>
+              <Button
+                as={Link}
+                to='/create-event'
+                floated='right'
+                positive
+                inverted
+                content='Create Event'
+              />
+            </Menu.Item>
+          </>
+        )}
 
         {authenticated ? (
           <SignedInMenu signOut={handleSignOut} currentUser={currentUser} />
