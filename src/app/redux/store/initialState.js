@@ -6,5 +6,6 @@ export const initialState = {
   auth: {
     authenticated: false,
     currentUser: null
-  }
+  },
+  async: { loading: false, elementName: null }
 };
