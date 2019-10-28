@@ -12,6 +12,9 @@ import { Provider as ReduxProvider } from "react-redux";
 import { configureStore } from "./app/redux/store";
 import { fetchEvents } from "./app/redux/actions/eventActions";
 
+import ReduxToastr from "react-redux-toastr";
+import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
+
 const store = configureStore();
 
 //Load initial events
@@ -28,6 +31,12 @@ const renderer = () =>
     <ReduxProvider store={store}>
       <Router>
         <ScrollToTop />
+        <ReduxToastr
+          position='bottom-right'
+          transitionIn='fadeIn'
+          transitionOut='fadeOut'
+          closeOnToastrClick
+        />
         <App />
       </Router>
     </ReduxProvider>,
