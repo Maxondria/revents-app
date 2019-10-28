@@ -5,6 +5,7 @@ import EventList from "./EventList";
 import { connect } from "react-redux";
 import { deleteEvent } from "../../app/redux/actions/eventActions";
 import LoadingSpinner from "../../app/layouts/LoadingSpinner";
+import EventActivity from "./EventActivity";
 
 const EventsDashboard = ({ events, deleteEvent, loading }) => {
   const handleDeleteEvent = id => {
@@ -12,7 +13,7 @@ const EventsDashboard = ({ events, deleteEvent, loading }) => {
   };
 
   return loading ? (
-    <LoadingSpinner/>
+    <LoadingSpinner />
   ) : (
     <Grid>
       <Grid.Column width={10}>
@@ -20,7 +21,7 @@ const EventsDashboard = ({ events, deleteEvent, loading }) => {
       </Grid.Column>
 
       <Grid.Column width={6}>
-        <h2>Activity</h2>
+        <EventActivity />
       </Grid.Column>
     </Grid>
   );
