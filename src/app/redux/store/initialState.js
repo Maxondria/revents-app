@@ -1,7 +1,5 @@
-import { events } from "../../../playground/test-data/events";
-
 export const initialState = {
-  events,
+  events: [],
   modal: null,
   auth: {
     authenticated: false,
