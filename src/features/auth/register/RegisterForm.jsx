@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, Segment, Button, Label } from "semantic-ui-react";
+import { Form, Segment, Button, Label, Divider } from "semantic-ui-react";
 import { Field, reduxForm } from "redux-form";
 import TextInput from "../../../app/common/form/TextInput";
 import { registerUser } from "../../../app/redux/actions/authActions";
@@ -13,6 +13,7 @@ import {
 } from "revalidate";
 
 import { isValidEmail } from "../../../app/common/utils/emailValidator";
+import SocialLogin from "../social-login/SocialLogin";
 
 const RegisterForm = ({
   handleSubmit,
@@ -57,6 +58,10 @@ const RegisterForm = ({
           >
             Register
           </Button>
+
+          <Divider horizontal content='Or' />
+
+          <SocialLogin />
         </Segment>
       </Form>
     </div>

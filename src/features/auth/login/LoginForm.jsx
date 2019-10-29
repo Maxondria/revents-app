@@ -1,6 +1,7 @@
 import React from "react";
-import { Form, Segment, Button, Label } from "semantic-ui-react";
+import { Form, Segment, Button, Label, Divider } from "semantic-ui-react";
 import { Field, reduxForm } from "redux-form";
+
 import TextInput from "../../../app/common/form/TextInput";
 
 import { connect } from "react-redux";
@@ -14,6 +15,7 @@ import {
 } from "revalidate";
 
 import { isValidEmail } from "../../../app/common/utils/emailValidator";
+import SocialLogin from "../social-login/SocialLogin";
 
 const LoginForm = ({
   login,
@@ -50,6 +52,10 @@ const LoginForm = ({
         >
           Login
         </Button>
+
+        <Divider horizontal content='Or' />
+
+        <SocialLogin />
       </Segment>
     </Form>
   );
