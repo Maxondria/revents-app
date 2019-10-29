@@ -3,6 +3,9 @@ import { Segment, Item, Label, List } from "semantic-ui-react";
 
 const EventDetailedSidebar = ({ attendees }) => {
   const isHost = false;
+
+  const formattedAttendees = Object.values(attendees);
+
   return (
     <>
       <Segment
@@ -13,16 +16,19 @@ const EventDetailedSidebar = ({ attendees }) => {
         inverted
         color='teal'
       >
-        {attendees && attendees.length}{" "}
-        {attendees && attendees.length > 0 ? "People" : "Person"} Going
+        {formattedAttendees && formattedAttendees.length}{" "}
+        {formattedAttendees && formattedAttendees.length > 0
+          ? "People"
+          : "Person"}{" "}
+        Going
       </Segment>
 
       <Segment attached>
         <List relaxed>
           <Item.Group divided>
-            {attendees &&
-              attendees.map(attendee => (
-                <Item key={attendee.id} style={{ position: "relative" }}>
+            {formattedAttendees &&
+              Object.values(formattedAttendees).map((attendee, i) => (
+                <Item key={i} style={{ position: "relative" }}>
                   {isHost && (
                     <Label
                       style={{ position: "absolute" }}

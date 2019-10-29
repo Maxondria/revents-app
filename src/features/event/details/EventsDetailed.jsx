@@ -22,9 +22,10 @@ const EventsDetailed = ({ event }) => {
   );
 };
 
-const mapStateToProps = ({ events }, props) => ({
+const mapStateToProps = ({ firestore }, props) => ({
   event: props.match.params.id
-    ? events && events.find(event => event.id === props.match.params.id)
+    ? firestore.ordered.events &&
+      firestore.ordered.events.find(event => event.id === props.match.params.id)
     : {}
 });
 

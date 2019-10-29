@@ -29,8 +29,8 @@ const EventsDashboard = ({ events, deleteEvent, loading }) => {
   );
 };
 
-const mapStateToProps = ({ events, async: { loading } }) => ({
-  events,
+const mapStateToProps = ({ firestore, async: { loading } }) => ({
+  events: firestore.ordered.events,
   loading
 });
 
