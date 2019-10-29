@@ -5,7 +5,23 @@ import { Field, reduxForm } from "redux-form";
 import TextInput from "../../../app/common/form/TextInput";
 import { registerUser } from "../../../app/redux/actions/authActions";
 
-const RegisterForm = ({ handleSubmit, registerUser, error }) => {
+import {
+  combineValidators,
+  composeValidators,
+  isRequired,
+  hasLengthGreaterThan
+} from "revalidate";
+
+import { isValidEmail } from "../../../app/common/utils/emailValidator";
+
+const RegisterForm = ({
+  handleSubmit,
+  registerUser,
+  error,
+  invalid,
+  submitting,
+  pristine
+}) => {
   return (
     <div>
       <Form onSubmit={handleSubmit(registerUser)} size='large'>
@@ -32,7 +48,13 @@ const RegisterForm = ({ handleSubmit, registerUser, error }) => {
             placeholder='Password'
           />
           {error && <Label basic color='red' content={error} />}
-          <Button fluid size='large' color='teal'>
+          <Button
+            type='submit'
+            disabled={invalid || submitting || pristine}
+            fluid
+            size='large'
+            color='teal'
+          >
             Register
           </Button>
         </Segment>
@@ -41,7 +63,18 @@ const RegisterForm = ({ handleSubmit, registerUser, error }) => {
   );
 };
 
+const validate = combineValidators({
+  email: composeValidators(isRequired("Email"), isValidEmail)(),
+  displayName: isRequired("Name"),
+  password: composeValidators(
+    isRequired("Password"),
+    hasLengthGreaterThan(5)({
+      message: "Password must be at least 6 characters"
+    })
+  )()
+});
+
 export default connect(
   undefined,
   { registerUser }
-)(reduxForm({ form: "rxRegisterForm" })(RegisterForm));
+)(reduxForm({ form: "rxRegisterForm", validate })(RegisterForm));
