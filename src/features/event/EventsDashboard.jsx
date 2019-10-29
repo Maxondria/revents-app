@@ -7,6 +7,8 @@ import { deleteEvent } from "../../app/redux/actions/eventActions";
 import LoadingSpinner from "../../app/layouts/LoadingSpinner";
 import EventActivity from "./EventActivity";
 
+import { firestoreConnect } from "react-redux-firebase";
+
 const EventsDashboard = ({ events, deleteEvent, loading }) => {
   const handleDeleteEvent = id => {
     deleteEvent(id);
@@ -35,4 +37,4 @@ const mapStateToProps = ({ events, async: { loading } }) => ({
 export default connect(
   mapStateToProps,
   { deleteEvent }
-)(EventsDashboard);
+)(firestoreConnect([{ collection: "events" }])(EventsDashboard));

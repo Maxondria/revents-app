@@ -10,7 +10,6 @@ import ScrollToTop from "./app/common/utils/ScrollToTop";
 
 import { Provider as ReduxProvider } from "react-redux";
 import { configureStore } from "./app/redux/store";
-import { fetchEvents } from "./app/redux/actions/eventActions";
 
 import ReduxToastr from "react-redux-toastr";
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
@@ -18,8 +17,6 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 const store = configureStore();
 
 //Load initial events
-store.dispatch(fetchEvents());
-
 /**
  * HOT MODULE REPLACEMENT
  * -Prevent unnecessary re-renders on edit
