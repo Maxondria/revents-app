@@ -5,7 +5,7 @@ import { Field, reduxForm } from "redux-form";
 import TextInput from "../../../app/common/form/TextInput";
 
 import { connect } from "react-redux";
-import { login } from "../../../app/redux/actions/authActions";
+import { login, socialLogin } from "../../../app/redux/actions/authActions";
 
 import {
   combineValidators,
@@ -19,6 +19,7 @@ import SocialLogin from "../social-login/SocialLogin";
 
 const LoginForm = ({
   login,
+  socialLogin,
   handleSubmit,
   error,
   invalid,
@@ -55,7 +56,7 @@ const LoginForm = ({
 
         <Divider horizontal content='Or' />
 
-        <SocialLogin />
+        <SocialLogin socialLogin={socialLogin} />
       </Segment>
     </Form>
   );
@@ -73,5 +74,5 @@ const validate = combineValidators({
 
 export default connect(
   undefined,
-  { login }
+  { login, socialLogin }
 )(reduxForm({ form: "rxLoginForm", validate })(LoginForm));

@@ -62,8 +62,7 @@ export const socialLogin = provider => async (
     });
   } catch (error) {
     console.log(error);
-    throw new SubmissionError({
-      _error: error.message
-    });
   }
 };
+
+//FB john_iukwefd_lauberg@tfbnw.net, maxondria
