@@ -46,3 +46,24 @@ export const registerUser = ({ email, password, displayName }) => async (
     });
   }
 };
+
+export const socialLogin = provider => async (
+  dispatch,
+  _getState,
+  { getFirebase }
+) => {
+  const firebase = getFirebase();
+
+  try {
+    dispatch(closeModal());
+    await firebase.login({
+      provider,
+      type: "popup"
+    });
+  } catch (error) {
+    console.log(error);
+    throw new SubmissionError({
+      _error: error.message
+    });
+  }
+};
