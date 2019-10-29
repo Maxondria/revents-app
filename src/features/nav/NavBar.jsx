@@ -6,20 +6,18 @@ import SignedInMenu from "./menus/SignedInMenu";
 
 import { connect } from "react-redux";
 import { openModal } from "../../app/redux/actions/modalActions";
-import { logout } from "../../app/redux/actions/authActions";
 
-const NavBar = ({
-  history,
-  openModal,
-  logout,
-  auth: { authenticated, currentUser }
-}) => {
+import { withFirebase } from "react-redux-firebase";
+
+const NavBar = ({ history, openModal, firebase, auth }) => {
+  const authenticated = auth.isLoaded && !auth.isEmpty;
+
   const handleSignIn = () => openModal("LoginModal");
 
   const handleSignUp = () => openModal("RegisterModal");
 
   const handleSignOut = () => {
-    logout();
+    firebase.logout();
     history.push("/");
   };
 
@@ -57,7 +55,7 @@ const NavBar = ({
         )}
 
         {authenticated ? (
-          <SignedInMenu signOut={handleSignOut} currentUser={currentUser} />
+          <SignedInMenu signOut={handleSignOut} auth={auth} />
         ) : (
           <SignedOutMenu signIn={handleSignIn} signUp={handleSignUp} />
         )}
@@ -66,13 +64,15 @@ const NavBar = ({
   );
 };
 
-const mapStateToProps = ({ auth }) => ({
-  auth
+const mapStateToProps = ({ firebase }) => ({
+  auth: firebase.auth
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { openModal, logout }
-  )(NavBar)
+  withFirebase(
+    connect(
+      mapStateToProps,
+      { openModal }
+    )(NavBar)
+  )
 );
