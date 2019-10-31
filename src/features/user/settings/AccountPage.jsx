@@ -19,14 +19,21 @@ import {
   hasLengthGreaterThan
 } from "revalidate";
 
-const AccountPage = ({ error, invalid, submitting, pristine }) => {
+const AccountPage = ({
+  handleSubmit,
+  updatePassword,
+  error,
+  invalid,
+  submitting,
+  pristine
+}) => {
   return (
     <Segment>
       <Header dividing size='large' content='Account' />
       <div>
         <Header color='teal' sub content='Change password' />
         <p>Use this form to update your account settings</p>
-        <Form>
+        <Form onSubmit={handleSubmit(updatePassword)}>
           <Field
             width={8}
             label='New Password'
@@ -96,4 +103,4 @@ const validate = combineValidators({
   )()
 });
 
-export default reduxForm({ form: "account", validate })(AccountPage);
+export default reduxForm({ form: "rxAccountForm", validate })(AccountPage);
