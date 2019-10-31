@@ -3,6 +3,7 @@ import { Form, Label } from "semantic-ui-react";
 
 const TextInput = ({
   input,
+  width,
   type,
   placeholder,
   label,
@@ -10,7 +11,7 @@ const TextInput = ({
 }) => {
   return (
     <>
-      <Form.Field error={touched && !!error}>
+      <Form.Field error={touched && !!error} width={width}>
         <Label>{label}</Label>
         <input {...input} placeholder={placeholder} type={type} />
         {touched && error && (
