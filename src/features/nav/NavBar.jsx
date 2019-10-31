@@ -9,7 +9,7 @@ import { openModal } from "../../app/redux/actions/modalActions";
 
 import { withFirebase } from "react-redux-firebase";
 
-const NavBar = ({ history, openModal, firebase, auth }) => {
+const NavBar = ({ history, openModal, firebase, auth, profile }) => {
   const authenticated = auth.isLoaded && !auth.isEmpty;
 
   const handleSignIn = () => openModal("LoginModal");
@@ -55,7 +55,7 @@ const NavBar = ({ history, openModal, firebase, auth }) => {
         )}
 
         {authenticated ? (
-          <SignedInMenu signOut={handleSignOut} auth={auth} />
+          <SignedInMenu signOut={handleSignOut} profile={profile} />
         ) : (
           <SignedOutMenu signIn={handleSignIn} signUp={handleSignUp} />
         )}
@@ -65,7 +65,8 @@ const NavBar = ({ history, openModal, firebase, auth }) => {
 };
 
 const mapStateToProps = ({ firebase }) => ({
-  auth: firebase.auth
+  auth: firebase.auth,
+  profile: firebase.profile
 });
 
 export default withRouter(
