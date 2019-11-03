@@ -46,6 +46,8 @@ if (module.hot) {
   });
 }
 
-renderer();
+store.firebaseAuthIsReady.then(() => {
+  renderer();
+});
 
 serviceWorker.unregister();
