@@ -9,8 +9,14 @@ import AccountPage from "./AccountPage";
 
 import { connect } from "react-redux";
 import { updatePassword } from "../../../app/redux/actions/authActions";
+import { updateProfile } from "../../../app/redux/actions/userActions";
 
-const SettingsDashboard = ({ updatePassword, providerId, user }) => {
+const SettingsDashboard = ({
+  updatePassword,
+  providerId,
+  user,
+  updateProfile
+}) => {
   return (
     <Grid>
       <Grid.Column width={12}>
@@ -21,7 +27,11 @@ const SettingsDashboard = ({ updatePassword, providerId, user }) => {
           <Route
             path='/settings/basic'
             render={routeProps => (
-              <BasicPage {...routeProps} initialValues={user} />
+              <BasicPage
+                {...routeProps}
+                initialValues={user}
+                updateProfile={updateProfile}
+              />
             )}
           />
           <Route path='/settings/about' component={AboutPage} />
@@ -53,5 +63,5 @@ const mapStateToProps = ({ firebase: { auth, profile } }) => ({
 
 export default connect(
   mapStateToProps,
-  { updatePassword }
+  { updatePassword, updateProfile }
 )(SettingsDashboard);

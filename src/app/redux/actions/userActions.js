@@ -1,4 +1,5 @@
 import { toastr } from "react-redux-toastr";
+import { reset } from "redux-form";
 
 export const updateProfile = user => async (
   dispatch,
@@ -7,7 +8,11 @@ export const updateProfile = user => async (
 ) => {
   try {
     const firebase = getFirebase();
-    await firebase.updateProfile(user);
+    const { isLoaded, isEmpty, ...updatedUser } = user;
+
+    await firebase.updateProfile(updatedUser);
+
+    await dispatch(reset("rxUpdateProfileForm"));
     toastr.success("Success!", "Profile Updated Successfully!");
   } catch (error) {
     console.log(error);

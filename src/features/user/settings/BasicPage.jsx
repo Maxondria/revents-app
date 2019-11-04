@@ -7,11 +7,11 @@ import TextInput from "../../../app/common/form/TextInput";
 import RadioInput from "../../../app/common/form/RadioInput";
 import { addYears } from "date-fns";
 
-const BasicPage = ({ pristine, submitting }) => {
+const BasicPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
   return (
     <Segment>
       <Header dividing size='large' content='Basics' />
-      <Form>
+      <Form onSubmit={handleSubmit(updateProfile)}>
         <Field
           label='Username'
           width={8}
@@ -68,6 +68,7 @@ const BasicPage = ({ pristine, submitting }) => {
   );
 };
 
-export default reduxForm({ form: "userProfile", enableReinitialize: true })(
-  BasicPage
-);
+export default reduxForm({
+  form: "rxUpdateProfileForm",
+  enableReinitialize: true
+})(BasicPage);
