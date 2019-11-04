@@ -8,10 +8,11 @@ const SelectInput = ({
   multiple,
   options,
   label,
+  width,
   meta: { touched, error }
 }) => {
   return (
-    <Form.Field error={touched && !!error}>
+    <Form.Field error={touched && !!error} width={width}>
       <Label>{label}</Label>
       <Select
         value={input.value || null}

@@ -10,7 +10,7 @@ import AccountPage from "./AccountPage";
 import { connect } from "react-redux";
 import { updatePassword } from "../../../app/redux/actions/authActions";
 
-const SettingsDashboard = ({ updatePassword, providerId }) => {
+const SettingsDashboard = ({ updatePassword, providerId, user }) => {
   return (
     <Grid>
       <Grid.Column width={12}>
@@ -18,7 +18,12 @@ const SettingsDashboard = ({ updatePassword, providerId }) => {
           {/* Redirect immediately to show basic settings here only if we are from /settings */}
           <Redirect exact from='/settings' to='/settings/basic' />
 
-          <Route path='/settings/basic' component={BasicPage} />
+          <Route
+            path='/settings/basic'
+            render={routeProps => (
+              <BasicPage {...routeProps} initialValues={user} />
+            )}
+          />
           <Route path='/settings/about' component={AboutPage} />
           <Route path='/settings/photos' component={PhotosPage} />
           <Route
@@ -41,8 +46,9 @@ const SettingsDashboard = ({ updatePassword, providerId }) => {
   );
 };
 
-const mapStateToProps = ({ firebase: { auth } }) => ({
-  providerId: auth.providerData[0].providerId
+const mapStateToProps = ({ firebase: { auth, profile } }) => ({
+  providerId: auth.providerData[0].providerId,
+  user: profile
 });
 
 export default connect(

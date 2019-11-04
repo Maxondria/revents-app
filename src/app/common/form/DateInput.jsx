@@ -13,7 +13,7 @@ const DateInput = ({
   ...rest
 }) => {
   return (
-    <Form.Field error={touched && !!error}>
+    <Form.Field error={touched && !!error} width={width}>
       {/* <Label>{label}</Label> */}
       <DatePicker
         {...rest}

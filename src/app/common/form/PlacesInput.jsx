@@ -20,7 +20,7 @@ const PlacesInput = ({
     >
       {/* Child Component that actually renders on the page, receives props as a child */}
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-        <Form.Field error={touched && !!error}>
+        <Form.Field error={touched && !!error} width={width}>
           <Label>{label}</Label>
           <input
             placeholder={placeholder}
