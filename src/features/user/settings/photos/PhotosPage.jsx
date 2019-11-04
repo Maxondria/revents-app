@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   Segment,
@@ -8,8 +8,16 @@ import {
   Button,
   Card
 } from "semantic-ui-react";
+import DropzoneInput from "./DropzoneInput";
 
 const PhotosPage = props => {
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    //clean up on ummount and before new file updates
+    return () => files.forEach(file => URL.revokeObjectURL(file.preview));
+  }, [files]);
+
   return (
     <Segment>
       <Header dividing size='large' content='Your Photos' />
@@ -17,6 +25,7 @@ const PhotosPage = props => {
         <Grid.Row />
         <Grid.Column width={4}>
           <Header color='teal' sub content='Step 1 - Add Photo' />
+          <DropzoneInput setFiles={setFiles} />
         </Grid.Column>
 
         <Grid.Column width={1} />
@@ -28,12 +37,18 @@ const PhotosPage = props => {
         <Grid.Column width={1} />
 
         <Grid.Column width={4}>
-          <Header sub color='teal' content='Step 3 - Preview and Upload' />
+          <Header sub color='teal' content='Step 3 - Preview & Upload' />
+          {files.length > 0 && (
+            <Image
+              src={files[0].preview}
+              style={{ minHeight: "200px", minWidth: "200px" }}
+            />
+          )}
         </Grid.Column>
       </Grid>
 
       <Divider />
-      
+
       <Header sub color='teal' content='All Photos' />
 
       <Card.Group itemsPerRow={5}>
