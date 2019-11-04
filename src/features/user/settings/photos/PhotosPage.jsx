@@ -9,9 +9,11 @@ import {
   Card
 } from "semantic-ui-react";
 import DropzoneInput from "./DropzoneInput";
+import CropperInput from "./CropperInput";
 
-const PhotosPage = props => {
+const PhotosPage = () => {
   const [files, setFiles] = useState([]);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     //clean up on ummount and before new file updates
@@ -32,6 +34,9 @@ const PhotosPage = props => {
 
         <Grid.Column width={4}>
           <Header sub color='teal' content='Step 2 - Resize image' />
+          {files.length > 0 && (
+            <CropperInput imagePreview={files[0].preview} setImage={setImage} />
+          )}
         </Grid.Column>
 
         <Grid.Column width={1} />
@@ -39,9 +44,13 @@ const PhotosPage = props => {
         <Grid.Column width={4}>
           <Header sub color='teal' content='Step 3 - Preview & Upload' />
           {files.length > 0 && (
-            <Image
-              src={files[0].preview}
-              style={{ minHeight: "200px", minWidth: "200px" }}
+            <div
+              className='img-preview'
+              style={{
+                minHeight: "200px",
+                minWidth: "200px",
+                overflow: "hidden"
+              }}
             />
           )}
         </Grid.Column>
