@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const DateInput = ({
-  input,
+  input: { value, onBlur, onChange },
   width,
   label,
   placeholder,
@@ -18,9 +18,15 @@ const DateInput = ({
       <DatePicker
         {...rest}
         placeholderText={placeholder}
-        selected={input.value ? new Date(input.value) : null}
-        onChange={input.onChange}
-        onBlur={input.onBlur}
+        selected={
+          value
+            ? Object.prototype.toString.call(value) === "[object Date]"
+              ? value
+              : value.toDate()//coming from firebase then
+            : null
+        }
+        onChange={onChange}
+        onBlur={(_event, value) => onBlur(value)}
         onChangeRaw={event => event.preventDefault()}
       />
       {touched && error && (
