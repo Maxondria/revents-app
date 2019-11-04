@@ -4,8 +4,10 @@ import { Field, reduxForm } from "redux-form";
 import DateInput from "../../../app/common/form/DateInput";
 import PlaceInput from "../../../app/common/form/PlacesInput";
 import TextInput from "../../../app/common/form/TextInput";
+import RadioInput from "../../../app/common/form/RadioInput";
+import { addYears } from "date-fns";
 
-const BasicPage = ({ pristine, submitting, invalid }) => {
+const BasicPage = ({ pristine, submitting }) => {
   return (
     <Segment>
       <Header dividing size='large' content='Basics' />
@@ -26,16 +28,37 @@ const BasicPage = ({ pristine, submitting, invalid }) => {
           component={PlaceInput}
           width={8}
         />
-        <Form.Group inline>{/* todo: Gender Radio button */}</Form.Group>
+        <Form.Group inline>
+          <label>Gender: </label>
+          <Field
+            name='gender'
+            type='radio'
+            value='male'
+            label='Male'
+            component={RadioInput}
+          />
+          <Field
+            name='gender'
+            type='radio'
+            value='female'
+            label='Female'
+            component={RadioInput}
+          />
+        </Form.Group>
         <Field
           width={8}
           name='dateOfBirth'
           component={DateInput}
+          dateFormat='dd LLL yyyy'
+          showYearDropdown={true}
+          showMonthDropdown={true}
+          dropdownMode='select'
+          maxDate={addYears(new Date(), -18)}
           placeholder='Date of Birth'
         />
         <Divider />
         <Button
-          disabled={pristine || submitting || invalid}
+          disabled={pristine || submitting}
           size='large'
           positive
           content='Update Profile'
