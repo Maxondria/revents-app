@@ -13,6 +13,7 @@ export const updateProfile = user => async (
     await firebase.updateProfile(updatedUser);
 
     await dispatch(reset("rxUpdateProfileForm"));
+    await dispatch(reset("rxUserProfileForm"));
     toastr.success("Success!", "Profile Updated Successfully!");
   } catch (error) {
     console.log(error);

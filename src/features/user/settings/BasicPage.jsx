@@ -70,5 +70,6 @@ const BasicPage = ({ pristine, submitting, handleSubmit, updateProfile }) => {
 
 export default reduxForm({
   form: "rxUpdateProfileForm",
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: false
 })(BasicPage);

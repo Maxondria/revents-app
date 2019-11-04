@@ -34,7 +34,16 @@ const SettingsDashboard = ({
               />
             )}
           />
-          <Route path='/settings/about' component={AboutPage} />
+          <Route
+            path='/settings/about'
+            render={routeProps => (
+              <AboutPage
+                {...routeProps}
+                initialValues={user}
+                updateProfile={updateProfile}
+              />
+            )}
+          />
           <Route path='/settings/photos' component={PhotosPage} />
           <Route
             path='/settings/account'
