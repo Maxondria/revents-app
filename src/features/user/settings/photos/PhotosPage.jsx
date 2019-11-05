@@ -6,14 +6,21 @@ import CropperInput from "./CropperInput";
 import { connect } from "react-redux";
 import {
   uploadProfileImage,
-  deletePhoto
+  deletePhoto,
+  setMainPhoto
 } from "../../../../app/redux/actions/userActions";
 import { toastr } from "react-redux-toastr";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import UserPhotos from "./UserPhotos";
 
-const PhotosPage = ({ uploadProfileImage, deletePhoto, photos, profile }) => {
+const PhotosPage = ({
+  uploadProfileImage,
+  deletePhoto,
+  setMainPhoto,
+  photos,
+  profile
+}) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
 
@@ -31,6 +38,14 @@ const PhotosPage = ({ uploadProfileImage, deletePhoto, photos, profile }) => {
     try {
       await deletePhoto(photo);
       toastr.success("Success", "Image Deleted Successfully!");
+    } catch (error) {
+      toastr.error("Oops ", error.message);
+    }
+  };
+
+  const handleSetMainPhoto = async photo => {
+    try {
+      await setMainPhoto(photo);
     } catch (error) {
       toastr.error("Oops ", error.message);
     }
@@ -106,6 +121,7 @@ const PhotosPage = ({ uploadProfileImage, deletePhoto, photos, profile }) => {
         photos={photos}
         profile={profile}
         handleDeletePhoto={handleDeletePhoto}
+        handleSetMainPhoto={handleSetMainPhoto}
       />
     </Segment>
   );
@@ -134,7 +150,7 @@ const query = ({ auth }) => [
 export default compose(
   connect(
     mapStateToProps,
-    { uploadProfileImage, deletePhoto }
+    { uploadProfileImage, deletePhoto, setMainPhoto }
   ),
   firestoreConnect(componentProps => query(componentProps))
 )(PhotosPage);
