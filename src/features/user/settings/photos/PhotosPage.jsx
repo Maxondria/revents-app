@@ -19,7 +19,8 @@ const PhotosPage = ({
   deletePhoto,
   setMainPhoto,
   photos,
-  profile
+  profile,
+  loading
 }) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
@@ -98,6 +99,7 @@ const PhotosPage = ({
 
               <Button.Group>
                 <Button
+                  loading={loading}
                   onClick={handleImageUpload}
                   style={{ width: "100px" }}
                   positive
@@ -105,6 +107,7 @@ const PhotosPage = ({
                 />
 
                 <Button
+                  disabled={loading}
                   onClick={clearUploadedFile}
                   style={{ width: "100px" }}
                   icon='close'
@@ -131,11 +134,13 @@ const mapStateToProps = ({
   firebase: { auth, profile },
   firestore: {
     ordered: { photos }
-  }
+  },
+  async: { loading }
 }) => ({
   auth,
   profile,
-  photos
+  photos,
+  loading
 });
 
 const query = ({ auth }) => [
