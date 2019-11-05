@@ -1,5 +1,6 @@
 import { toastr } from "react-redux-toastr";
 import { reset } from "redux-form";
+import cuid from "cuid";
 import {
   asynActionStart,
   asyncActionFinish,
@@ -33,9 +34,11 @@ export const uploadProfileImage = (file, filename) => async (
   const firebase = getFirebase();
   const firestore = getFirestore();
 
+  const imagename = cuid();
+
   const user = firebase.auth().currentUser;
   const path = `${user.uid}/user_images`;
-  const options = { name: filename };
+  const options = { name: imagename };
 
   try {
     dispatch(asynActionStart());
@@ -55,7 +58,7 @@ export const uploadProfileImage = (file, filename) => async (
         doc: user.uid,
         subcollections: [{ collection: "photos" }]
       },
-      { name: filename, url: downloadURL }
+      { name: imagename, url: downloadURL }
     );
     dispatch(asyncActionFinish());
   } catch (error) {
