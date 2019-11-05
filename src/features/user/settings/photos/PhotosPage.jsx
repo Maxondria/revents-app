@@ -11,7 +11,11 @@ import {
 import DropzoneInput from "./DropzoneInput";
 import CropperInput from "./CropperInput";
 
-const PhotosPage = () => {
+import { connect } from "react-redux";
+import { uploadProfileImage } from "../../../../app/redux/actions/userActions";
+import { toastr } from "react-redux-toastr";
+
+const PhotosPage = ({ uploadProfileImage }) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
 
@@ -19,6 +23,22 @@ const PhotosPage = () => {
     //clean up on ummount and before new file updates
     return () => files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
+
+  const clearUploadedFile = () => {
+    setFiles([]);
+    setImage(null);
+  };
+
+  const handleImageUpload = async () => {
+    try {
+      await uploadProfileImage(image, files[0].name);
+      clearUploadedFile();
+      toastr.success("Success", "Image Uploaded Successfully!");
+    } catch (error) {
+      console.log(error);
+      toastr.error("Oops, Failed!", "Image Upload Failed!");
+    }
+  };
 
   return (
     <Segment>
@@ -44,14 +64,31 @@ const PhotosPage = () => {
         <Grid.Column width={4}>
           <Header sub color='teal' content='Step 3 - Preview & Upload' />
           {files.length > 0 && (
-            <div
-              className='img-preview'
-              style={{
-                minHeight: "200px",
-                minWidth: "200px",
-                overflow: "hidden"
-              }}
-            />
+            <>
+              <div
+                className='img-preview'
+                style={{
+                  minHeight: "200px",
+                  minWidth: "200px",
+                  overflow: "hidden"
+                }}
+              />
+
+              <Button.Group>
+                <Button
+                  onClick={handleImageUpload}
+                  style={{ width: "100px" }}
+                  positive
+                  icon='check'
+                />
+
+                <Button
+                  onClick={clearUploadedFile}
+                  style={{ width: "100px" }}
+                  icon='close'
+                />
+              </Button.Group>
+            </>
           )}
         </Grid.Column>
       </Grid>
@@ -80,4 +117,7 @@ const PhotosPage = () => {
   );
 };
 
-export default PhotosPage;
+export default connect(
+  undefined,
+  { uploadProfileImage }
+)(PhotosPage);

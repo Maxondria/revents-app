@@ -33,31 +33,30 @@ export const uploadProfileImage = (file, filename) => async (
   const firebase = getFirebase();
   const firestore = getFirestore();
 
-  const { uid, updateProfile } = firebase.auth().currentUser;
-  const path = `${uid}/user_images`;
-  const options = { filename };
+  const user = firebase.auth().currentUser;
+  const path = `${user.uid}/user_images`;
+  const options = { name: filename };
 
   try {
     dispatch(asynActionStart());
 
     const uploadedFile = await firebase.uploadFile(path, file, null, options);
     const downloadURL = await uploadedFile.uploadTaskSnapshot.ref.getDownloadURL();
-    const userRef = await firestore.get(`users/${uid}`);
+    const userRef = await firestore.get(`users/${user.uid}`);
 
     if (!userRef.data().photoURL) {
       await firebase.updateProfile({ photoURL: downloadURL });
-      await updateProfile({ photoURL: downloadURL });
+      await user.updateProfile({ photoURL: downloadURL });
     }
 
     await firestore.add(
       {
         collection: "users",
-        doc: uid,
+        doc: user.uid,
         subcollections: [{ collection: "photos" }]
       },
       { name: filename, url: downloadURL }
     );
-
     dispatch(asyncActionFinish());
   } catch (error) {
     console.log(error);
