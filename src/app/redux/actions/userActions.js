@@ -66,3 +66,26 @@ export const uploadProfileImage = (file, filename) => async (
     dispatch(asyncActionError());
   }
 };
+
+export const deletePhoto = photo => async (
+  dispatch,
+  _getState,
+  { getFirebase, getFirestore }
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+
+  const user = firebase.auth().currentUser;
+  const path = `${user.uid}/user_images/${photo.name}`;
+  try {
+    await firebase.deleteFile(path);
+    await firestore.delete({
+      collection: "users",
+      doc: user.uid,
+      subcollections: [{ collection: "photos", doc: photo.id }]
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+};

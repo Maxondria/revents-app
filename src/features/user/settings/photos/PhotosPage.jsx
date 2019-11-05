@@ -4,13 +4,16 @@ import DropzoneInput from "./DropzoneInput";
 import CropperInput from "./CropperInput";
 
 import { connect } from "react-redux";
-import { uploadProfileImage } from "../../../../app/redux/actions/userActions";
+import {
+  uploadProfileImage,
+  deletePhoto
+} from "../../../../app/redux/actions/userActions";
 import { toastr } from "react-redux-toastr";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import UserPhotos from "./UserPhotos";
 
-const PhotosPage = ({ uploadProfileImage, photos, profile }) => {
+const PhotosPage = ({ uploadProfileImage, deletePhoto, photos, profile }) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
 
@@ -22,6 +25,15 @@ const PhotosPage = ({ uploadProfileImage, photos, profile }) => {
   const clearUploadedFile = () => {
     setFiles([]);
     setImage(null);
+  };
+
+  const handleDeletePhoto = async photo => {
+    try {
+      await deletePhoto(photo);
+      toastr.success("Success", "Image Deleted Successfully!");
+    } catch (error) {
+      toastr.error("Oops ", error.message);
+    }
   };
 
   const handleImageUpload = async () => {
@@ -90,7 +102,11 @@ const PhotosPage = ({ uploadProfileImage, photos, profile }) => {
 
       <Divider />
 
-      <UserPhotos photos={photos} profile={profile} />
+      <UserPhotos
+        photos={photos}
+        profile={profile}
+        handleDeletePhoto={handleDeletePhoto}
+      />
     </Segment>
   );
 };
@@ -118,7 +134,7 @@ const query = ({ auth }) => [
 export default compose(
   connect(
     mapStateToProps,
-    { uploadProfileImage }
+    { uploadProfileImage, deletePhoto }
   ),
   firestoreConnect(componentProps => query(componentProps))
 )(PhotosPage);
