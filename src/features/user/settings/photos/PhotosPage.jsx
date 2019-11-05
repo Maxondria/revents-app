@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Image,
-  Segment,
-  Header,
-  Divider,
-  Grid,
-  Button,
-  Card
-} from "semantic-ui-react";
+import { Segment, Header, Divider, Grid, Button } from "semantic-ui-react";
 import DropzoneInput from "./DropzoneInput";
 import CropperInput from "./CropperInput";
 
@@ -16,8 +8,9 @@ import { uploadProfileImage } from "../../../../app/redux/actions/userActions";
 import { toastr } from "react-redux-toastr";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import UserPhotos from "./UserPhotos";
 
-const PhotosPage = ({ uploadProfileImage }) => {
+const PhotosPage = ({ uploadProfileImage, photos, profile }) => {
   const [files, setFiles] = useState([]);
   const [image, setImage] = useState(null);
 
@@ -97,31 +90,20 @@ const PhotosPage = ({ uploadProfileImage }) => {
 
       <Divider />
 
-      <Header sub color='teal' content='All Photos' />
-
-      <Card.Group itemsPerRow={5}>
-        <Card>
-          <Image src='https://randomuser.me/api/portraits/men/20.jpg' />
-          <Button positive>Main Photo</Button>
-        </Card>
-
-        <Card>
-          <Image src='https://randomuser.me/api/portraits/men/20.jpg' />
-          <div className='ui two buttons'>
-            <Button basic color='green'>
-              Main
-            </Button>
-            <Button basic icon='trash' color='red' />
-          </div>
-        </Card>
-      </Card.Group>
+      <UserPhotos photos={photos} profile={profile} />
     </Segment>
   );
 };
 
-const mapStateToProps = ({ firebase: { auth, profile } }) => ({
+const mapStateToProps = ({
+  firebase: { auth, profile },
+  firestore: {
+    ordered: { photos }
+  }
+}) => ({
   auth,
-  profile
+  profile,
+  photos
 });
 
 const query = ({ auth }) => [
