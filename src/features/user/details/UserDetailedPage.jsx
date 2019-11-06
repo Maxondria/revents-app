@@ -6,6 +6,7 @@ import UserDetailedPageHeader from "./UserDetailedPageHeader";
 import UserDetailedPageAbout from "./UserDetailedPageAbout";
 import UserDetailedPagePhotos from "./UserDetailedPagePhotos";
 import UserDetailedPageEvents from "./UserDetailedPageEvents";
+import { Link } from "react-router-dom";
 
 const UserDetailedPage = ({ auth, profile }) => {
   return (
@@ -16,7 +17,14 @@ const UserDetailedPage = ({ auth, profile }) => {
 
       <Grid.Column width={4}>
         <Segment>
-          <Button color='teal' fluid basic content='Edit Profile' />
+          <Button
+            color='teal'
+            as={Link}
+            to='/settings/about'
+            fluid
+            basic
+            content='Edit Profile'
+          />
         </Segment>
       </Grid.Column>
 

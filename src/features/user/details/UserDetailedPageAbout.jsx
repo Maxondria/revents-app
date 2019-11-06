@@ -30,9 +30,10 @@ const UserDetailedPageAbout = ({ profile }) => {
           </Grid.Column>
           <Grid.Column width={6}>
             <Header icon='heart outline' content='Interests' />
-            <List>
-              {profile.interests &&
-                profile.interests.map((interest, i) => (
+
+            {profile.interests && profile.interests.length > 0 ? (
+              <List>
+                {profile.interests.map((interest, i) => (
                   <Item key={i}>
                     <Icon name='heart' />
                     <Item.Content>
@@ -40,7 +41,14 @@ const UserDetailedPageAbout = ({ profile }) => {
                     </Item.Content>
                   </Item>
                 ))}
-            </List>
+              </List>
+            ) : (
+              <Item>
+                <Item>
+                  <Item.Content>No Interests</Item.Content>
+                </Item>
+              </Item>
+            )}
           </Grid.Column>
         </Grid>
       </Segment>
