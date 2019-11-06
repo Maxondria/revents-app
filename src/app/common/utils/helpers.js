@@ -14,3 +14,10 @@ export const createNewEvent = (user, photoURL, event) => ({
     }
   }
 });
+
+export const ObjectToArray = object =>
+  object
+    ? Object.entries(object).map(([key, val]) =>
+        Object.assign({}, { id: key }, val)
+      )
+    : null;
