@@ -1,39 +1,45 @@
 import React from "react";
 import { Grid, Segment, Header, List, Item, Icon } from "semantic-ui-react";
+import { format } from "date-fns";
 
-const UserDetailedPageAbout = () => {
+const UserDetailedPageAbout = ({ profile }) => {
+  const capitalizeFirstLetter = string =>
+    string.replace(/^\w/, c => c.toUpperCase());
+
   return (
     <Grid.Column width={12}>
       <Segment>
         <Grid columns={2}>
           <Grid.Column width={10}>
-            <Header icon='smile' content='About Display Name' />
+            <Header icon='smile' content={`About ${profile.displayName}`} />
             <p>
-              I am a: <strong>Occupation Placeholder</strong>
+              I am a: <strong>{profile.occupation || "Undisclosed"}</strong>
             </p>
             <p>
-              Originally from <strong>United Kingdom</strong>
+              Originally from <strong>{profile.origin || "Undisclosed"}</strong>
             </p>
             <p>
-              Member Since: <strong>28th March 2018</strong>
+              Member Since:{" "}
+              <strong>
+                {(profile.createdAt &&
+                  format(profile.createdAt.toDate(), "EEEE do LLL, YYY")) ||
+                  "Unknown"}
+              </strong>
             </p>
-            <p>Description of user</p>
+            <p>{profile.about}</p>
           </Grid.Column>
           <Grid.Column width={6}>
             <Header icon='heart outline' content='Interests' />
             <List>
-              <Item>
-                <Icon name='heart' />
-                <Item.Content>Interest 1</Item.Content>
-              </Item>
-              <Item>
-                <Icon name='heart' />
-                <Item.Content>Interest 2</Item.Content>
-              </Item>
-              <Item>
-                <Icon name='heart' />
-                <Item.Content>Interest 3</Item.Content>
-              </Item>
+              {profile.interests &&
+                profile.interests.map(interest => (
+                  <Item>
+                    <Icon name='heart' />
+                    <Item.Content>
+                      {capitalizeFirstLetter(interest)}
+                    </Item.Content>
+                  </Item>
+                ))}
             </List>
           </Grid.Column>
         </Grid>

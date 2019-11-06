@@ -12,7 +12,7 @@ const UserDetailedPage = ({ auth, profile }) => {
     <Grid>
       <UserDetailedPageHeader profile={profile} />
 
-      <UserDetailedPageAbout />
+      <UserDetailedPageAbout profile={profile} />
 
       <Grid.Column width={4}>
         <Segment>
