@@ -13,7 +13,11 @@ const UserDetailedPageHeader = ({ profile }) => {
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image avatar size='small' src={profile.photoURL} />
+            <Item.Image
+              avatar
+              size='small'
+              src={profile.photoURL || "/assets/user.png"}
+            />
             <Item.Content verticalAlign='bottom'>
               <Header as='h1'>{profile.displayName}</Header>
               <br />

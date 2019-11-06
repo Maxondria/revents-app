@@ -32,8 +32,8 @@ const UserDetailedPageAbout = ({ profile }) => {
             <Header icon='heart outline' content='Interests' />
             <List>
               {profile.interests &&
-                profile.interests.map(interest => (
-                  <Item>
+                profile.interests.map((interest, i) => (
+                  <Item key={i}>
                     <Icon name='heart' />
                     <Item.Content>
                       {capitalizeFirstLetter(interest)}
