@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
-import cuid from "cuid";
 
 import { reduxForm, Field } from "redux-form";
 import { createEvent, updateEvent } from "../../app/redux/actions/eventActions";
@@ -62,20 +61,19 @@ const EventForm = props => {
     { key: "travel", text: "Travel", value: "travel" }
   ];
 
-  const formSubmitHandler = values => {
+  const formSubmitHandler = async values => {
     values.venueLatLng = venueLatLng;
-    if (initialValues && initialValues.id) {
-      updateEvent(values);
-      history.push(`/events/${initialValues.id}`);
-    } else {
-      const id = cuid();
-      createEvent({
-        ...values,
-        id,
-        hostPhotoURL: "/assets/user.png",
-        hostedBy: "Max BigBudget"
-      });
-      history.push(`/events/${id}`);
+
+    try {
+      if (initialValues && initialValues.id) {
+        updateEvent(values);
+        history.push(`/events/${initialValues.id}`);
+      } else {
+        await createEvent(values);
+        history.push(`/events/`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

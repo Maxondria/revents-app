@@ -21,7 +21,7 @@ export const createEvent = event => async (
   const firebase = getFirebase();
   const user = firebase.auth().currentUser;
 
-  const photoURL = getState.firebase.profile.photoURL;
+  const photoURL = getState().firebase.profile.photoURL;
   const newEvent = createNewEvent(user, photoURL, event);
 
   try {
@@ -35,6 +35,7 @@ export const createEvent = event => async (
     });
 
     toastr.success("Success!", "Event Created Successfully!");
+    return createdEvent;
   } catch (error) {
     toastr.error("Ooops!", "Something Went Wrong!");
   }
