@@ -5,7 +5,7 @@ import EventsDashboard from "../features/event/EventsDashboard";
 import EventsDetailed from "../features/event/details/EventsDetailed";
 import PeopleDashboard from "../features/user/people/PeopleDashboard";
 import SettingsDashboard from "../features/user/settings/SettingsDashboard";
-import UserDetailedPage from "../features/user/settings/UserDetailedPage";
+import UserDetailedPage from "../features/user/details/UserDetailedPage";
 import EventForm from "../features/event/EventForm";
 import NotFoundPage from "../features/user/settings/NotFoundPage";
 import NavBar from "../features/nav/NavBar";

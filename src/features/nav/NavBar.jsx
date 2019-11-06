@@ -55,7 +55,7 @@ const NavBar = ({ history, openModal, firebase, auth, profile }) => {
         )}
 
         {authenticated ? (
-          <SignedInMenu signOut={handleSignOut} profile={profile} />
+          <SignedInMenu signOut={handleSignOut} profile={profile} auth={auth} />
         ) : (
           <SignedOutMenu signIn={handleSignIn} signUp={handleSignUp} />
         )}
