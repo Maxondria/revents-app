@@ -81,8 +81,10 @@ const EventForm = props => {
   };
 
   const fetchEventCallback = useCallback(async () => {
-    await firestore.get(`events/${match.params.id}`);
-  }, [firestore, match.params.id]);
+    if (match && match.params && match.params.id) {
+      await firestore.get(`events/${match.params.id}`);
+    }
+  }, [firestore, match]);
 
   useEffect(() => {
     fetchEventCallback();
