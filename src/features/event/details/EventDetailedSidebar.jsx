@@ -3,8 +3,6 @@ import { Segment, Item, Label, List } from "semantic-ui-react";
 import { ObjectToArray } from "../../../app/common/utils/helpers";
 
 const EventDetailedSidebar = ({ attendees }) => {
-  const isHost = false;
-
   const formattedAttendees = ObjectToArray(attendees);
 
   return (
@@ -18,7 +16,7 @@ const EventDetailedSidebar = ({ attendees }) => {
         color='teal'
       >
         {formattedAttendees && formattedAttendees.length}{" "}
-        {formattedAttendees && formattedAttendees.length > 0
+        {formattedAttendees && formattedAttendees.length > 1
           ? "People"
           : "Person"}{" "}
         Going
@@ -30,7 +28,7 @@ const EventDetailedSidebar = ({ attendees }) => {
             {formattedAttendees &&
               Object.values(formattedAttendees).map(attendee => (
                 <Item key={attendee.id} style={{ position: "relative" }}>
-                  {isHost && (
+                  {attendee.host && (
                     <Label
                       style={{ position: "absolute" }}
                       color='orange'

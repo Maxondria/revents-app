@@ -2,6 +2,7 @@ import React from "react";
 import { Segment, Image, Item, Header, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { ObjectToArray } from "../../../app/common/utils/helpers";
 
 const eventImageStyle = {
   filter: "brightness(30%)"
@@ -16,7 +17,12 @@ const eventImageTextStyle = {
   color: "white"
 };
 
-const EventDetailedHeader = ({ event }) => {
+const EventDetailedHeader = ({ event, auth }) => {
+  const isHost = event.hostUid === auth.uid;
+  const isGoing =
+    event.attendees &&
+    ObjectToArray(event.attendees).some(attendee => attendee.id === auth.uid);
+
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: "0" }}>
@@ -48,18 +54,27 @@ const EventDetailedHeader = ({ event }) => {
         </Segment>
       </Segment>
 
-      <Segment attached='bottom'>
-        <Button>Cancel My Place</Button>
-        <Button color='teal'>JOIN THIS EVENT</Button>
+      <Segment attached='bottom' clearing>
+        {!isHost && (
+          <>
+            {isGoing ? (
+              <Button>Cancel My Place</Button>
+            ) : (
+              <Button color='teal'>JOIN THIS EVENT</Button>
+            )}
+          </>
+        )}
 
-        <Button
-          as={Link}
-          to={`/manage-event/${event.id}`}
-          color='orange'
-          floated='right'
-        >
-          Manage Event
-        </Button>
+        {isHost && (
+          <Button
+            as={Link}
+            to={`/manage-event/${event.id}`}
+            color='orange'
+            floated='right'
+          >
+            Manage Event
+          </Button>
+        )}
       </Segment>
     </Segment.Group>
   );

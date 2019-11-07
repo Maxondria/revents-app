@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
 import { toastr } from "react-redux-toastr";
 
-const EventsDetailed = ({ event, firestore, match, history }) => {
+const EventsDetailed = ({ event, firestore, match, history, auth }) => {
   const fetchEventCallback = useCallback(async () => {
     const event = await firestore.get(`events/${match.params.id}`);
     if (!event.exists) {
@@ -24,7 +24,7 @@ const EventsDetailed = ({ event, firestore, match, history }) => {
   return event ? (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailedHeader event={event} />
+        <EventDetailedHeader event={event} auth={auth} />
         <EventDetailedInfo event={event} />
         <EventDetailedChat />
       </Grid.Column>
@@ -38,12 +38,13 @@ const EventsDetailed = ({ event, firestore, match, history }) => {
   );
 };
 
-const mapStateToProps = ({ firestore }, props) => ({
+const mapStateToProps = ({ firestore, firebase: { auth } }, props) => ({
   event: props.match.params.id
     ? firestore.ordered.events &&
       firestore.ordered.events.length > 0 &&
       firestore.ordered.events.find(event => event.id === props.match.params.id)
-    : undefined
+    : undefined,
+  auth
 });
 
 export default withFirestore(connect(mapStateToProps)(EventsDetailed));
