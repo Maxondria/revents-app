@@ -6,25 +6,32 @@ import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
 import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
-import { toastr } from "react-redux-toastr";
+import { attendEvent } from "../../../app/redux/actions/eventActions";
 
-const EventsDetailed = ({ event, firestore, match, history, auth }) => {
-  const fetchEventCallback = useCallback(async () => {
-    const event = await firestore.get(`events/${match.params.id}`);
-    if (!event.exists) {
-      history.push("/events");
-      toastr.error("Not Found", "Sorry, Looks like this event doesn't exist!");
-    }
-  }, [firestore, history, match.params.id]);
+const EventsDetailed = ({ event, firestore, match, auth, attendEvent }) => {
+   const fetchEventCallback = useCallback(async () => {
+     if (match && match.params && match.params.id) {
+       await firestore.setListener({
+         collection: "events",
+         doc: match.params.id
+       });
+     }
+   }, [firestore, match]);
 
-  useEffect(() => {
-    fetchEventCallback();
-  }, [fetchEventCallback]);
+   useEffect(() => {
+     fetchEventCallback();
+     return () =>
+       firestore.unsetListener({ collection: "events", doc: match.params.id });
+   }, [fetchEventCallback, firestore, match]);
 
   return event ? (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailedHeader event={event} auth={auth} />
+        <EventDetailedHeader
+          event={event}
+          auth={auth}
+          attendEvent={attendEvent}
+        />
         <EventDetailedInfo event={event} />
         <EventDetailedChat />
       </Grid.Column>
@@ -47,4 +54,9 @@ const mapStateToProps = ({ firestore, firebase: { auth } }, props) => ({
   auth
 });
 
-export default withFirestore(connect(mapStateToProps)(EventsDetailed));
+export default withFirestore(
+  connect(
+    mapStateToProps,
+    { attendEvent }
+  )(EventsDetailed)
+);

@@ -52,6 +52,43 @@ export const updateEvent = event => async (
   }
 };
 
+export const attendEvent = event => async (
+  _dispatch,
+  getState,
+  { getFirestore, getFirebase }
+) => {
+  const firestore = getFirestore();
+  const firebase = getFirebase();
+  const user = firebase.auth().currentUser;
+  const profile = getState().firebase.profile;
+
+  const attendee = {
+    going: true,
+    joinDate: firestore.FieldValue.serverTimestamp(),
+    photoURL: profile.photoURL || "/assets/user.png",
+    displayName: profile.displayName,
+    host: false
+  };
+
+  try {
+    await firestore.update(`events/${event.id}`, {
+      [`attendees.${user.uid}`]: attendee
+    });
+
+    await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
+      eventId: event.id,
+      userId: user.uid,
+      eventDate: event.date,
+      host: false
+    });
+
+    toastr.success("Success!", "You have signed up to this event!");
+  } catch (error) {
+    console.log(error);
+    toastr.error("Ooops!", "Something Went Wrong!");
+  }
+};
+
 export const cancelEventToggle = (cancelled, eventId) => async (
   _dispatch,
   _getState,
