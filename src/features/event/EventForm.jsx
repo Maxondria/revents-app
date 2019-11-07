@@ -1,5 +1,5 @@
 /*global google*/
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
 import { connect } from "react-redux";
 
@@ -19,10 +19,13 @@ import {
 } from "revalidate";
 
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
+import { withFirestore } from "react-redux-firebase";
 
 const EventForm = props => {
   const {
     history,
+    firestore,
+    match,
     handleSubmit,
     initialValues,
     createEvent,
@@ -76,6 +79,14 @@ const EventForm = props => {
       console.log(error);
     }
   };
+
+  const fetchEventCallback = useCallback(async () => {
+    await firestore.get(`events/${match.params.id}`);
+  }, [firestore, match.params.id]);
+
+  useEffect(() => {
+    fetchEventCallback();
+  }, [fetchEventCallback]);
 
   return (
     <Grid>
@@ -151,10 +162,12 @@ const EventForm = props => {
   );
 };
 
-const mapStateToProps = ({ events }, props) => ({
+const mapStateToProps = ({ firestore }, props) => ({
   initialValues: props.match.params.id
-    ? events && events.find(event => event.id === props.match.params.id)
-    : null
+    ? firestore.ordered.events &&
+      firestore.ordered.events.length > 0 &&
+      firestore.ordered.events.find(event => event.id === props.match.params.id)
+    : {}
 });
 
 const validate = combineValidators({
@@ -171,12 +184,15 @@ const validate = combineValidators({
   date: isRequired("Date")
 });
 
-export default connect(
-  mapStateToProps,
-  { createEvent, updateEvent }
-)(
-  reduxForm({
-    form: "rxEventForm",
-    validate
-  })(EventForm)
+export default withFirestore(
+  connect(
+    mapStateToProps,
+    { createEvent, updateEvent }
+  )(
+    reduxForm({
+      form: "rxEventForm",
+      validate,
+      enableReinitialize: true
+    })(EventForm)
+  )
 );
