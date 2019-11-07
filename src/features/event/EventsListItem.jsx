@@ -5,15 +5,19 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { ObjectToArray } from "../../app/common/utils/helpers";
 
-const EventsListItem = ({ event }) => {
+const EventsListItem = ({ event }) => {  
   return (
     <Segment.Group>
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image size='tiny' circular src={event.hostPhotoURL} />
+            <Item.Image
+              size='tiny'
+              circular
+              src={event.hostPhotoURL || "/assets/user.png"}
+            />
             <Item.Content>
-              <Item.Header as={Link} to= {`/events/${event.id}`}>
+              <Item.Header as={Link} to={`/events/${event.id}`}>
                 {event.title}
               </Item.Header>
               <Item.Description>

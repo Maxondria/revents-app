@@ -3,7 +3,7 @@ import { Grid, Segment, Header, Image } from "semantic-ui-react";
 
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, isEmpty } from "react-redux-firebase";
 
 const UserDetailedPagePhotos = ({ photos }) => {
   return (
@@ -22,21 +22,50 @@ const UserDetailedPagePhotos = ({ photos }) => {
   );
 };
 
-const query = ({ auth }) => [
-  {
-    collection: "users",
-    doc: auth.uid,
-    subcollections: [{ collection: "photos" }],
-    storeAs: "photos"
+const query = ({ auth, userUid }) => {
+  if (userUid === auth.uid) {
+    return [
+      {
+        collection: "users",
+        doc: auth.uid,
+        subcollections: [{ collection: "photos" }],
+        storeAs: "photos"
+      }
+    ];
+  } else {
+    return [
+      {
+        collection: "users",
+        doc: userUid,
+        storeAs: "otherProfiles"
+      },
+      {
+        collection: "users",
+        doc: userUid,
+        subcollections: [{ collection: "photos" }],
+        storeAs: "photos"
+      }
+    ];
   }
-];
+};
 
-const mapStateToProps = ({
-  firebase: { auth },
-  firestore: {
-    ordered: { photos }
-  }
-}) => ({ auth, photos });
+const mapStateToProps = (
+  {
+    firestore: {
+      ordered: { photos: currentUserPhotos, otherProfiles }
+    }
+  },
+  { auth, userUid }
+) => {
+  const photos =
+    userUid === auth.uid
+      ? currentUserPhotos
+      : !isEmpty(otherProfiles) && otherProfiles[0].photos;
+  return {
+    auth,
+    photos
+  };
+};
 
 export default compose(
   connect(mapStateToProps),
