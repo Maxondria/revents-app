@@ -18,16 +18,18 @@ const UserDetailedPage = ({ profile, auth, userUid }) => {
       <UserDetailedPageAbout profile={profile} />
 
       <Grid.Column width={4}>
-        <Segment>
-          <Button
-            color='teal'
-            as={Link}
-            to='/settings/about'
-            fluid
-            basic
-            content='Edit Profile'
-          />
-        </Segment>
+        {auth.uid === userUid && (
+          <Segment>
+            <Button
+              color='teal'
+              as={Link}
+              to='/settings/about'
+              fluid
+              basic
+              content='Edit Profile'
+            />
+          </Segment>
+        )}
       </Grid.Column>
 
       <UserDetailedPagePhotos profile={profile} auth={auth} userUid={userUid} />
