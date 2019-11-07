@@ -1,8 +1,4 @@
-import {
-  UPDATE_EVENT,
-  DELETE_EVENT,
-  FETCH_EVENTS
-} from "../constants/actionTypes";
+import { DELETE_EVENT, FETCH_EVENTS } from "../constants/actionTypes";
 import {
   asynActionStart,
   asyncActionFinish,
@@ -41,9 +37,15 @@ export const createEvent = event => async (
   }
 };
 
-export const updateEvent = event => async dispatch => {
+export const updateEvent = event => async (
+  _dispatch,
+  _getState,
+  { getFirestore }
+) => {
+  const firestore = getFirestore();
+
   try {
-    dispatch({ type: UPDATE_EVENT, payload: { event } });
+    await firestore.update(`events/${event.id}`, event);
     toastr.success("Success!", "Event Modified Successfully!");
   } catch (error) {
     toastr.error("Ooops!", "Something Went Wrong!");

@@ -69,7 +69,7 @@ const EventForm = props => {
 
     try {
       if (initialValues && initialValues.id) {
-        updateEvent(values);
+        await updateEvent(values);
         history.push(`/events/${initialValues.id}`);
       } else {
         await createEvent(values);
@@ -82,7 +82,10 @@ const EventForm = props => {
 
   const fetchEventCallback = useCallback(async () => {
     if (match && match.params && match.params.id) {
-      await firestore.get(`events/${match.params.id}`);
+      const event = await firestore.get(`events/${match.params.id}`);
+      if (event.exists) {
+        setVenueLatLng(event.data().venueLatLng);
+      }
     }
   }, [firestore, match]);
 
