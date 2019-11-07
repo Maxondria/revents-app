@@ -89,6 +89,29 @@ export const attendEvent = event => async (
   }
 };
 
+export const cancelMyPlace = event => async (
+  _dispatch,
+  _getState,
+  { getFirestore, getFirebase }
+) => {
+  const firestore = getFirestore();
+  const firebase = getFirebase();
+  const user = firebase.auth().currentUser;
+
+  try {
+    await firestore.update(`events/${event.id}`, {
+      [`attendees.${user.uid}`]: firestore.FieldValue.delete()
+    });
+
+    await firestore.delete(`event_attendee/${event.id}_${user.uid}`);
+
+    toastr.success("Success!", "You have removed yourself from this event!");
+  } catch (error) {
+    console.log(error);
+    toastr.error("Ooops!", "Something Went Wrong!");
+  }
+};
+
 export const cancelEventToggle = (cancelled, eventId) => async (
   _dispatch,
   _getState,

@@ -17,7 +17,7 @@ const eventImageTextStyle = {
   color: "white"
 };
 
-const EventDetailedHeader = ({ event, auth, attendEvent }) => {
+const EventDetailedHeader = ({ event, auth, attendEvent, cancelMyPlace }) => {
   const isHost = event.hostUid === auth.uid;
   const isGoing =
     event.attendees &&
@@ -58,7 +58,9 @@ const EventDetailedHeader = ({ event, auth, attendEvent }) => {
         {!isHost && (
           <>
             {isGoing ? (
-              <Button>Cancel My Place</Button>
+              <Button onClick={() => cancelMyPlace(event)}>
+                Cancel My Place
+              </Button>
             ) : (
               <Button onClick={() => attendEvent(event)} color='teal'>
                 JOIN THIS EVENT

@@ -6,23 +6,33 @@ import EventDetailedChat from "./EventDetailedChat";
 import EventDetailedSidebar from "./EventDetailedSidebar";
 import { connect } from "react-redux";
 import { withFirestore } from "react-redux-firebase";
-import { attendEvent } from "../../../app/redux/actions/eventActions";
+import {
+  attendEvent,
+  cancelMyPlace
+} from "../../../app/redux/actions/eventActions";
 
-const EventsDetailed = ({ event, firestore, match, auth, attendEvent }) => {
-   const fetchEventCallback = useCallback(async () => {
-     if (match && match.params && match.params.id) {
-       await firestore.setListener({
-         collection: "events",
-         doc: match.params.id
-       });
-     }
-   }, [firestore, match]);
+const EventsDetailed = ({
+  event,
+  firestore,
+  match,
+  auth,
+  attendEvent,
+  cancelMyPlace
+}) => {
+  const fetchEventCallback = useCallback(async () => {
+    if (match && match.params && match.params.id) {
+      await firestore.setListener({
+        collection: "events",
+        doc: match.params.id
+      });
+    }
+  }, [firestore, match]);
 
-   useEffect(() => {
-     fetchEventCallback();
-     return () =>
-       firestore.unsetListener({ collection: "events", doc: match.params.id });
-   }, [fetchEventCallback, firestore, match]);
+  useEffect(() => {
+    fetchEventCallback();
+    return () =>
+      firestore.unsetListener({ collection: "events", doc: match.params.id });
+  }, [fetchEventCallback, firestore, match]);
 
   return event ? (
     <Grid>
@@ -31,6 +41,7 @@ const EventsDetailed = ({ event, firestore, match, auth, attendEvent }) => {
           event={event}
           auth={auth}
           attendEvent={attendEvent}
+          cancelMyPlace={cancelMyPlace}
         />
         <EventDetailedInfo event={event} />
         <EventDetailedChat />
@@ -57,6 +68,6 @@ const mapStateToProps = ({ firestore, firebase: { auth } }, props) => ({
 export default withFirestore(
   connect(
     mapStateToProps,
-    { attendEvent }
+    { attendEvent, cancelMyPlace }
   )(EventsDetailed)
 );
