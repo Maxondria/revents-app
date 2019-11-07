@@ -1,6 +1,7 @@
 import React from "react";
 import { Segment, Item, Label, List } from "semantic-ui-react";
 import { ObjectToArray } from "../../../app/common/utils/helpers";
+import { Link } from "react-router-dom";
 
 const EventDetailedSidebar = ({ attendees }) => {
   const formattedAttendees = ObjectToArray(attendees);
@@ -39,7 +40,11 @@ const EventDetailedSidebar = ({ attendees }) => {
                   )}
                   <Item.Image size='tiny' src={attendee.photoURL} />
                   <Item.Content verticalAlign='middle'>
-                    <Item.Header as='h3'>{attendee.displayName}</Item.Header>
+                    <Item.Header as='h3'>
+                      <Link to={`/profile/${attendee.id}`}>
+                        {attendee.displayName}
+                      </Link>
+                    </Item.Header>
                   </Item.Content>
                 </Item>
               ))}

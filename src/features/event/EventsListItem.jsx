@@ -3,6 +3,7 @@ import { Segment, Item, Icon, List, Button, Label } from "semantic-ui-react";
 import EventListAttendee from "./EventListAttendee";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { ObjectToArray } from "../../app/common/utils/helpers";
 
 const EventsListItem = ({ event }) => {
   return (
@@ -12,8 +13,13 @@ const EventsListItem = ({ event }) => {
           <Item>
             <Item.Image size='tiny' circular src={event.hostPhotoURL} />
             <Item.Content>
-              <Item.Header>{event.title}</Item.Header>
-              <Item.Description>Hosted by: {event.hostedBy}</Item.Description>
+              <Item.Header as={Link} to= {`/events/${event.id}`}>
+                {event.title}
+              </Item.Header>
+              <Item.Description>
+                Hosted by:{" "}
+                <Link to={`/profile/${event.hostUid}`}>{event.hostedBy}</Link>
+              </Item.Description>
 
               {event.cancelled && (
                 <Label
@@ -39,7 +45,7 @@ const EventsListItem = ({ event }) => {
       <Segment secondary>
         <List horizontal>
           {event.attendees &&
-            Object.values(event.attendees).map((attendee, i) => (
+            ObjectToArray(event.attendees).map((attendee, i) => (
               <EventListAttendee key={i} attendee={attendee} />
             ))}
         </List>

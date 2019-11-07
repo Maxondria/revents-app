@@ -8,7 +8,7 @@ import UserDetailedPagePhotos from "./UserDetailedPagePhotos";
 import UserDetailedPageEvents from "./UserDetailedPageEvents";
 import { Link } from "react-router-dom";
 
-const UserDetailedPage = ({ auth, profile }) => {
+const UserDetailedPage = ({ profile }) => {
   return (
     <Grid>
       <UserDetailedPageHeader profile={profile} />
@@ -36,7 +36,6 @@ const UserDetailedPage = ({ auth, profile }) => {
 };
 
 const mapStateToProps = ({ firebase }) => ({
-  auth: firebase.auth,
   profile: firebase.profile
 });
 
