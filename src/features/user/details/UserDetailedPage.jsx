@@ -18,8 +18,8 @@ const UserDetailedPage = ({ profile, auth, userUid }) => {
       <UserDetailedPageAbout profile={profile} />
 
       <Grid.Column width={4}>
-        {auth.uid === userUid && (
-          <Segment>
+        <Segment>
+          {auth.uid === userUid ? (
             <Button
               color='teal'
               as={Link}
@@ -28,8 +28,15 @@ const UserDetailedPage = ({ profile, auth, userUid }) => {
               basic
               content='Edit Profile'
             />
-          </Segment>
-        )}
+          ) : (
+            <Button
+              color='teal'
+              fluid
+              basic
+              content={`Follow ${profile.displayName}`}
+            />
+          )}
+        </Segment>
       </Grid.Column>
 
       <UserDetailedPagePhotos profile={profile} auth={auth} userUid={userUid} />
