@@ -170,15 +170,15 @@ const EventForm = props => {
             <Button type='button' onClick={() => history.push("/events")}>
               Cancel
             </Button>
-            <Button
-              type='button'
-              floated='right'
-              color={event && event.cancelled ? "green" : "red"}
-              content={
-                event && event.cancelled ? "Reactivate Event" : "Cancel Event"
-              }
-              onClick={() => cancelEventToggle(!event.cancelled, event.id)}
-            />
+            {Object.keys(event).length > 0 && (
+              <Button
+                type='button'
+                floated='right'
+                color={event.cancelled ? "green" : "red"}
+                content={event.cancelled ? "Reactivate Event" : "Cancel Event"}
+                onClick={() => cancelEventToggle(!event.cancelled, event.id)}
+              />
+            )}
           </Form>
         </Segment>
       </Grid.Column>
