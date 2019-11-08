@@ -137,15 +137,33 @@ export const cancelEventToggle = (cancelled, eventId) => async (
   }
 };
 
-export const fetchEventsForDashboard = () => async dispatch => {
+export const fetchEventsForDashboard = lastEvent => async dispatch => {
   const today = new Date();
   const firestore = firebase.firestore();
 
-  const eventsQuery = firestore.collection("events").where("date", ">=", today);
+  const eventsRef = firestore.collection("events");
 
   try {
     dispatch(asynActionStart());
-    const snapshot = await eventsQuery.get();
+    const startAfter = lastEvent && (await eventsRef.doc(lastEvent.id).get());
+
+    const query = lastEvent
+      ? eventsRef
+          .where("date", ">=", today)
+          .orderBy("date")
+          .startAfter(startAfter)
+          .limit(2)
+      : eventsRef
+          .where("date", ">=", today)
+          .orderBy("date")
+          .limit(2);
+
+    const snapshot = await query.get();
+
+    if (snapshot.docs.length === 0) {
+      dispatch(asyncActionFinish());
+      return;
+    }
     const events = snapshot.docs.reduce((acc, val) => {
       acc.push({ id: val.id, ...val.data() });
       return acc;
@@ -153,6 +171,7 @@ export const fetchEventsForDashboard = () => async dispatch => {
 
     dispatch({ type: FETCH_EVENTS, payload: { events } });
     dispatch(asyncActionFinish());
+    return snapshot;
   } catch (error) {
     console.log(error);
     dispatch(asyncActionError());
