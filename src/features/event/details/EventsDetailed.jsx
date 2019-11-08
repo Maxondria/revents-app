@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import EventDetailedHeader from "./EventDetailedHeader";
 import EventDetailedInfo from "./EventDetailedInfo";
@@ -10,6 +10,7 @@ import {
   attendEvent,
   cancelMyPlace
 } from "../../../app/redux/actions/eventActions";
+import LoadingSpinner from "../../../app/layouts/LoadingSpinner";
 
 const EventsDetailed = ({
   event,
@@ -19,12 +20,15 @@ const EventsDetailed = ({
   attendEvent,
   cancelMyPlace
 }) => {
+  const [loadingEvent, setLoadingEvent] = useState(true);
+
   const fetchEventCallback = useCallback(async () => {
     if (match && match.params && match.params.id) {
       await firestore.setListener({
         collection: "events",
         doc: match.params.id
       });
+      setLoadingEvent(false);
     }
   }, [firestore, match]);
 
@@ -34,7 +38,7 @@ const EventsDetailed = ({
       firestore.unsetListener({ collection: "events", doc: match.params.id });
   }, [fetchEventCallback, firestore, match]);
 
-  return event ? (
+  return event && !loadingEvent ? (
     <Grid>
       <Grid.Column width={10}>
         <EventDetailedHeader
@@ -52,7 +56,7 @@ const EventsDetailed = ({
       </Grid.Column>
     </Grid>
   ) : (
-    ""
+    <LoadingSpinner />
   );
 };
 

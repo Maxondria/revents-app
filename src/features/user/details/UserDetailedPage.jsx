@@ -53,27 +53,20 @@ const query = ({ userUid }) => {
         collection: "users",
         doc: userUid,
         storeAs: "otherProfiles"
-      },
-      {
-        collection: "users",
-        doc: userUid,
-        subcollections: [{ collection: "photos" }],
-        storeAs: "photos"
       }
     ];
   }
 };
 
 const mapStateToProps = (
-  { firebase: { profile: firebaseProfile, auth }, firestore },
+  { firebase: { profile: firebaseProfile, auth }, firestore: { ordered } },
   { match }
 ) => {
   const userUid = match.params.id;
   const profile =
     userUid === auth.uid
       ? firebaseProfile
-      : !isEmpty(firestore.ordered.otherProfiles) &&
-        firestore.ordered.otherProfiles[0];
+      : !isEmpty(ordered.otherProfiles) && ordered.otherProfiles[0];
   return {
     profile,
     userUid,

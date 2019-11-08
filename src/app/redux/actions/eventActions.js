@@ -1,5 +1,12 @@
 import { toastr } from "react-redux-toastr";
 import { createNewEvent } from "../../common/utils/helpers";
+import firebase from "../../firebase/config";
+import { FETCH_EVENTS } from "../constants/actionTypes";
+import {
+  asynActionStart,
+  asyncActionFinish,
+  asyncActionError
+} from "./asyncActions";
 
 export const createEvent = event => async (
   _dispatch,
@@ -127,5 +134,27 @@ export const cancelEventToggle = (cancelled, eventId) => async (
     });
   } catch (error) {
     toastr.error("Ooops!", "Something Went Wrong!");
+  }
+};
+
+export const fetchEventsForDashboard = () => async dispatch => {
+  const today = new Date();
+  const firestore = firebase.firestore();
+
+  const eventsQuery = firestore.collection("events").where("date", ">=", today);
+
+  try {
+    dispatch(asynActionStart());
+    const snapshot = await eventsQuery.get();
+    const events = snapshot.docs.reduce((acc, val) => {
+      acc.push({ id: val.id, ...val.data() });
+      return acc;
+    }, []);
+
+    dispatch({ type: FETCH_EVENTS, payload: { events } });
+    dispatch(asyncActionFinish());
+  } catch (error) {
+    console.log(error);
+    dispatch(asyncActionError());
   }
 };

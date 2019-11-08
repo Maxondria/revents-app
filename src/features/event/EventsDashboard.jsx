@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { Grid } from "semantic-ui-react";
 import EventList from "./EventList";
 
@@ -6,10 +6,18 @@ import { connect } from "react-redux";
 import LoadingSpinner from "../../app/layouts/LoadingSpinner";
 import EventActivity from "./EventActivity";
 
-import { firestoreConnect, isLoaded } from "react-redux-firebase";
+import { fetchEventsForDashboard } from "../../app/redux/actions/eventActions";
 
-const EventsDashboard = ({ events }) => {
-  return !isLoaded(events) ? (
+const EventsDashboard = ({ events, loading, fetchEventsForDashboard }) => {
+  const fetchEventsCallback = useCallback(() => {
+    fetchEventsForDashboard();
+  }, [fetchEventsForDashboard]);
+
+  useEffect(() => {
+    fetchEventsCallback();
+  }, [fetchEventsCallback]);
+
+  return loading ? (
     <LoadingSpinner />
   ) : (
     <Grid>
@@ -24,10 +32,11 @@ const EventsDashboard = ({ events }) => {
   );
 };
 
-const mapStateToProps = ({ firestore }) => ({
-  events: firestore.ordered.events
+const mapStateToProps = ({ events, async: { loading } }) => ({
+  events,
+  loading
 });
-
-export default connect(mapStateToProps)(
-  firestoreConnect([{ collection: "events" }])(EventsDashboard)
-);
+export default connect(
+  mapStateToProps,
+  { fetchEventsForDashboard }
+)(EventsDashboard);
