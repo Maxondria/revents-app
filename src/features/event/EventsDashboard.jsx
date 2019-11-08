@@ -6,10 +6,10 @@ import { connect } from "react-redux";
 import LoadingSpinner from "../../app/layouts/LoadingSpinner";
 import EventActivity from "./EventActivity";
 
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, isLoaded } from "react-redux-firebase";
 
-const EventsDashboard = ({ events, loading }) => {
-  return loading ? (
+const EventsDashboard = ({ events }) => {
+  return !isLoaded(events) ? (
     <LoadingSpinner />
   ) : (
     <Grid>
@@ -24,9 +24,8 @@ const EventsDashboard = ({ events, loading }) => {
   );
 };
 
-const mapStateToProps = ({ firestore, async: { loading } }) => ({
-  events: firestore.ordered.events,
-  loading
+const mapStateToProps = ({ firestore }) => ({
+  events: firestore.ordered.events
 });
 
 export default connect(mapStateToProps)(
