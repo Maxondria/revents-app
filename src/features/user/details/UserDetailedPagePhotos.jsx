@@ -4,6 +4,7 @@ import { Grid, Segment, Header, Image } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect, isEmpty } from "react-redux-firebase";
+import Lazyload from "react-lazyload";
 
 const UserDetailedPagePhotos = ({ photos }) => {
   return (
@@ -13,9 +14,15 @@ const UserDetailedPagePhotos = ({ photos }) => {
 
         <Image.Group size='small'>
           {(photos &&
-            photos.map(photo => <Image key={photo.id} src={photo.url} />)) || (
-            <Image src='/assets/user.png' />
-          )}
+            photos.map(photo => (
+              <Lazyload
+                key={photo.id}
+                height={150}
+                placeholder={<Image src='/assets/user.png' />}
+              >
+                <Image src={photo.url} />
+              </Lazyload>
+            ))) || <Image src='/assets/user.png' />}
         </Image.Group>
       </Segment>
     </Grid.Column>
