@@ -42,6 +42,7 @@ const renderer = () =>
 
 if (module.hot) {
   module.hot.accept("./app/layouts/App", () => {
+    console.clear();
     setTimeout(renderer);
   });
 }

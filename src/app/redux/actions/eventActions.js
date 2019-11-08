@@ -149,12 +149,12 @@ export const fetchEventsForDashboard = lastEvent => async dispatch => {
 
     const query = lastEvent
       ? eventsRef
-          .where("date", ">=", today)
+          //.where("date", ">=", today)
           .orderBy("date")
           .startAfter(startAfter)
           .limit(2)
       : eventsRef
-          .where("date", ">=", today)
+          //.where("date", ">=", today)
           .orderBy("date")
           .limit(2);
 
@@ -162,7 +162,7 @@ export const fetchEventsForDashboard = lastEvent => async dispatch => {
 
     if (snapshot.docs.length === 0) {
       dispatch(asyncActionFinish());
-      return;
+      return snapshot;
     }
     const events = snapshot.docs.reduce((acc, val) => {
       acc.push({ id: val.id, ...val.data() });
