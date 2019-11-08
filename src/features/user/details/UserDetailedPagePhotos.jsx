@@ -7,25 +7,26 @@ import { firestoreConnect, isEmpty } from "react-redux-firebase";
 import Lazyload from "react-lazyload";
 
 const UserDetailedPagePhotos = ({ photos }) => {
-  return (
+  return photos && photos.length > 0 ? (
     <Grid.Column width={12}>
       <Segment attached>
         <Header icon='image' content='Photos' />
 
         <Image.Group size='small'>
-          {(photos &&
-            photos.map(photo => (
-              <Lazyload
-                key={photo.id}
-                height={150}
-                placeholder={<Image src='/assets/user.png' />}
-              >
-                <Image src={photo.url} />
-              </Lazyload>
-            ))) || <Image src='/assets/user.png' />}
+          {photos.map(photo => (
+            <Lazyload
+              key={photo.id}
+              height={150}
+              placeholder={<Image src='/assets/user.png' />}
+            >
+              <Image src={photo.url} />
+            </Lazyload>
+          ))}
         </Image.Group>
       </Segment>
     </Grid.Column>
+  ) : (
+    ""
   );
 };
 
